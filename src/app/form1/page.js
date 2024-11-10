@@ -32,7 +32,7 @@ function Page() {
     };
 
     useEffect(() => {
-        fetch("http://localhost:3000/api/user")
+        fetch("/api/user")
             .then((response) => response.json())
             .then((data) => {
                 const options = data.data.map((item) => ({
