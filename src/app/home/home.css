@@ -1,0 +1,73 @@
+/* Full Page Layout */
+/* body, html {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+} */
+
+/* Home Container */
+.home {
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Navbar and Footer should stay at top and bottom */
+
+
+.footer-main {
+    flex-shrink: 0; /* Prevents the footer from resizing */
+}
+
+/* Middle Section Fills Remaining Space */
+.middle {
+    flex-grow: 1; /* Fills remaining space between navbar and footer */
+    display: flex;
+    height: 540px;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 20px;
+    background-color: #E9EED9;
+    color: #54473F;
+    font-family: "Montserrat", sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Image Container */
+.img-container {
+    width: 400px;
+    height: 400px;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%; /* Circular image */
+}
+
+/* Text Container */
+.text-container {
+    max-width: 600px;
+}
+
+.text-container .Heading {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #54473F;
+    margin-bottom: 10px;
+}
+
+.text-container .context {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #54473F;
+    text-align: justify;
+}
