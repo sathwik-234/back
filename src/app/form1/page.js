@@ -27,7 +27,6 @@ function Page() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
             try {
                 const response = await fetch('/api/submit', {
                     method: 'POST',
@@ -49,11 +48,10 @@ function Page() {
                 console.error('Error during form submission:', err);
                 alert('An unexpected error occurred.');
             }
-            console.log('Form Data Submitted:', formData);
+            // console.log('Form Data Submitted:', formData);
         }; 
         
 
-    // Fetch CMSID options on mount
     useEffect(() => {
         fetch("/api/user")
             .then((response) => response.json())
@@ -70,7 +68,6 @@ function Page() {
             });
     }, []);
 
-    // Fetch data dynamically when cmsid changes
     useEffect(() => {
         const selectedOption = cmsidOptions.find((option) => option.value === formData.cmsid);
 
@@ -107,7 +104,7 @@ function Page() {
                 <form onSubmit={handleSubmit}>
                     <div className="right-block">
                         <div>
-                            <label>Cmsid:</label>
+                            <label>CMS Id:</label>
                             <select name="cmsid" value={formData.cmsid} onChange={handleChange}>
                                 {cmsidOptions.map((option) => (
                                     <option key={option.id} value={option.value}>
@@ -123,23 +120,23 @@ function Page() {
                         </div>
 
                         <div>
-                            <label>Design:</label>
+                            <label>Designation:</label>
                             <input type="text" name="design" value={formData.design} onChange={handleChange} />
                         </div>
 
                         <div>
-                            <label>HQ:</label>
+                            <label>HeadQuarters:</label>
                             <input type="text" name="hq" value={formData.hq} onChange={handleChange} />
                         </div>
                     </div>
 
                     <div className="left-block">
                         <div>
-                            <label>IC Train No:</label>
+                            <label>Incoming Train No:</label>
                             <input type="text" name="icTrainNo" value={formData.icTrainNo} onChange={handleChange} />
                         </div>
                         <div>
-                            <label>IC Time:</label>
+                            <label>Incoming Time:</label>
                             <input type="datetime-local" name="icTime" value={formData.icTime} onChange={handleChange} />
                         </div>
 
@@ -149,12 +146,12 @@ function Page() {
                         </div>
 
                         <div>
-                            <label>Pillow Cover:</label>
+                            <label>Pillow Covers:</label>
                             <input type="number" name="pillowCover" value={formData.pillowCover} onChange={handleChange} />
                         </div>
 
                         <div>
-                            <label>Blanket:</label>
+                            <label>Blankets:</label>
                             <input type="number" name="blanket" value={formData.blanket} onChange={handleChange} />
                         </div>
 
