@@ -46,16 +46,23 @@ function page() {
             } else {
                 console.error('Error submitting form:', result);
                 alert(`Error: ${result.error.message}`);
+                
             }
         } catch (err) {
             console.error('Error during form submission:', err);
-            alert('An unexpected error occurred.');
+            alert('There is already a CMS ID with the submitted ID');
+            setFormData({
+                cmsid: '',
+                name: '',
+                design: '',
+                hq: '',
+            })
         }
     };
 
     return (
         <>
-            <h1 className="form-name">Check In Form</h1>
+            <h1 className="form-name">New CMS-ID Form</h1>
             <div className="form-block">
                 <form onSubmit={handleSubmit}>
                     <div className="right-block">
