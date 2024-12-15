@@ -44,8 +44,8 @@ export default function RootLayout({ children }) {
                     <span className="dropdown-icon">▼</span>
                 </button>
                 <div className="dropdown-content">
-                    <a href="form1">Form 1</a>
-                    <a href="#form2">Form 2</a>
+                    <a href="CheckIn">Check In Form</a>
+                    <a href="NewEntry">New Entry Form</a>
                     <a href="#form3">Form 3</a>
                 </div>
             </div>

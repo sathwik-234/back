@@ -28,7 +28,7 @@ function Page() {
     const handleSubmit = async (e) => {
         e.preventDefault();
             try {
-                const response = await fetch('/api/submit', {
+                const response = await fetch('/api/CheckInSubmit', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

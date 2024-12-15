@@ -15,6 +15,9 @@ function page() {
                    <div className="context">
                            It is a "B" cateogry running room having  50 beds capacity located near to Gopalapatnam Railway Station.
                    </div>
+                   <div className='signature-footer'>
+                   <p>-done by <span className="author">"G.Pradeep Kumar"</span></p>
+                   </div>
                </div>
            </div>
    </div>
