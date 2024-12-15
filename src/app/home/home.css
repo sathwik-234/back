@@ -30,10 +30,11 @@
     align-items: center;
     justify-content: space-evenly;
     padding: 20px;
-    background-color: #E9EED9;
+    background-color: #ccd0be;
     color: #54473F;
     font-family: "Montserrat", sans-serif;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
 }
 
 /* Image Container */

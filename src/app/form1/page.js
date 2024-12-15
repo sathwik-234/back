@@ -49,6 +49,20 @@ function Page() {
                 alert('An unexpected error occurred.');
             }
             // console.log('Form Data Submitted:', formData);
+            setFormData(
+                {
+                    cmsid: '',
+        name: '',
+        design: '',
+        hq: '',
+        icTrainNo: '',
+        icTime: '',
+        bedSheets: 2,
+        pillowCover: 1,
+        blanket: 1,
+        allottedBed: '',
+                }
+            )
         }; 
         
 
