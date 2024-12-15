@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from 'react';
 import "./form1.css";
 
@@ -17,7 +17,7 @@ function Page() {
     });
 
     const [cmsidOptions, setCmsidOptions] = useState([
-        { value: '', label: 'Select Cmsid' },
+        { value: '', label: 'Select Cmsid', id: '' },
     ]);
 
     const handleChange = (e) => {
@@ -25,39 +25,92 @@ function Page() {
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form Data Submitted:', formData);
-        // Add your submit logic here
-    };
+        
+            try {
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
+        
+                const result = await response.json();
+                if (response.ok) {
+                    console.log('Form submitted successfully:', result);
+                    alert('Form submitted successfully!');
+                } else {
+                    console.error('Error submitting form:', result);
+                    alert(`Error: ${result.error.message}`);
+                }
+            } catch (err) {
+                console.error('Error during form submission:', err);
+                alert('An unexpected error occurred.');
+            }
+            console.log('Form Data Submitted:', formData);
+        }; 
+        
 
+    // Fetch CMSID options on mount
     useEffect(() => {
         fetch("/api/user")
             .then((response) => response.json())
             .then((data) => {
                 const options = data.data.map((item) => ({
+                    id: item.id,
                     value: item.cms_id,
                     label: item.cms_id,
                 }));
-                setCmsidOptions([{ value: '', label: 'Select Cmsid' }, ...options]);
-                
+                setCmsidOptions([{ value: '', label: 'Select Cmsid', id: "" }, ...options]);
             })
             .catch((err) => {
-                console.log(err);
+                console.error("Error fetching CMSID options:", err);
             });
-    }, []); // Fetch data only once on component mount
+    }, []);
+
+    // Fetch data dynamically when cmsid changes
+    useEffect(() => {
+        const selectedOption = cmsidOptions.find((option) => option.value === formData.cmsid);
+
+        if (selectedOption && selectedOption.id) {
+            fetch(`/api/user/${selectedOption.id}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.data) {
+                        setFormData((prevData) => ({
+                            ...prevData,
+                            cmsid: selectedOption.value,
+                            name: data.data.crewname || '',
+                            design: data.data.designation || '',
+                            hq: data.data.hq || '',
+                            icTrainNo: data.data.ic_train_no || '',
+                            icTime: data.data.ic_time || '',
+                            bedSheets: data.data.bed_sheets || prevData.bedSheets,
+                            pillowCover: data.data.pillow_cover || prevData.pillowCover,
+                            blanket: data.data.blanket || prevData.blanket,
+                            allottedBed: data.data.allotted_bed || '',
+                        }));
+                    }
+                })
+                .catch((err) => {
+                    console.error("Error fetching CMSID data:", err);
+                });
+        }
+    }, [formData.cmsid, cmsidOptions]);
 
     return (
         <>
-            <h1 className='form-name'>Check In Form</h1>
+            <h1 className="form-name">Check In Form</h1>
             <div className="form-block">
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className="right-block">
                         <div>
                             <label>Cmsid:</label>
                             <select name="cmsid" value={formData.cmsid} onChange={handleChange}>
                                 {cmsidOptions.map((option) => (
-                                    <option key={option.value} value={option.value}>
+                                    <option key={option.id} value={option.value}>
                                         {option.label}
                                     </option>
                                 ))}
@@ -110,10 +163,10 @@ function Page() {
                             <input type="text" name="allottedBed" value={formData.allottedBed} onChange={handleChange} />
                         </div>
                     </div>
+                    <div className="button-div">
+                        <button className="submitButton" type="submit">SUBMIT</button>
+                    </div>
                 </form>
-            </div>
-            <div className='button-div'>
-                <button className="submitButton" onClick={handleSubmit}>SUBMIT</button>
             </div>
         </>
     );
