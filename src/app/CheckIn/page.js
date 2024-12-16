@@ -49,7 +49,7 @@ function Page() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ status: 'TRUE',alloted_to : formData.cmsid }),
+                body: JSON.stringify({ status: 'TRUE',allotted_to : formData.cmsid }),
             });
 
             const result1 = await response.json();
