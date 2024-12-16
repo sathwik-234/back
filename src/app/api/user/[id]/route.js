@@ -1,18 +1,23 @@
-import {supabase} from "@/app/supabaseSetup"
-import { NextResponse } from "next/server"
+import { NextResponse } from 'next/server';
+import {supabase} from '@/utils/supabaseClient'; // Assuming supabaseClient is configured
 
+export async function GET(request, { params }) {
+    try {
+        const id = await params?.id;
 
-export const GET = async(req,{params},res)=>{
+        const { data, error } = await supabase
+            .from('Crew')
+            .select('*')
+            .eq('id', id)
+            .single();
 
-    const id = params.id
-     
-    //getAllUsers
-    const {data,error} = await supabase.from('Crew').select('*').eq("id",id).single();
-    
-    if(error){
-        return NextResponse.json({error},{status:500})
-    }
-    else{
-        return NextResponse.json({data},{status:200})
+        if (error) {
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+
+        return NextResponse.json({ data });
+    } catch (err) {
+        console.error('Error in API handler:', err);
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
 }

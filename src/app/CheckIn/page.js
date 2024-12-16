@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import "./form1.css";
 
 function Page() {
@@ -20,51 +20,66 @@ function Page() {
         { value: '', label: 'Select Cmsid', id: '' },
     ]);
 
+    const [roomidOptions, setRoomidOptions] = useState([
+        { value: '', label: 'Select Room', id: '' },
+    ]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
+        if (['bedSheets', 'pillowCover', 'blanket'].includes(name) && value < 0) {
+            alert('Value cannot be negative');
+            return;
+        }
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-            try {
-                const response = await fetch('/api/CheckInSubmit', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                });
-        
-                const result = await response.json();
-                if (response.ok) {
-                    console.log('Form submitted successfully:', result);
-                    alert('Form submitted successfully!');
-                } else {
-                    console.error('Error submitting form:', result);
-                    alert(`Error: ${result.error.message}`);
-                }
-            } catch (err) {
-                console.error('Error during form submission:', err);
-                alert('An unexpected error occurred.');
+        try {
+            const response = await fetch('/api/CheckInSubmit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const resp = await fetch(`/api/rooms/${formData.allottedBed}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: 'TRUE',alloted_to : formData.cmsid }),
+            });
+
+            const result1 = await response.json();
+            const result2 = await resp.json();
+
+            if (response.ok && resp.ok) {
+                console.log('Form submitted successfully:', result1);
+                alert('Form submitted successfully!');
+            } else {
+                console.error('Error submitting form:', response.ok ? result2 : result1);
+                alert(`Error: ${(response.ok ? result2.error.message : result1.error.message) || 'Unexpected error'}`);
             }
-            // console.log('Form Data Submitted:', formData);
-            setFormData(
-                {
-                    cmsid: '',
-        name: '',
-        design: '',
-        hq: '',
-        icTrainNo: '',
-        icTime: '',
-        bedSheets: 2,
-        pillowCover: 1,
-        blanket: 1,
-        allottedBed: '',
-                }
-            )
-        }; 
-        
+        } catch (err) {
+            console.error('Error during form submission:', err);
+            alert('An unexpected error occurred.');
+        } finally {
+            setFormData({
+                cmsid: '',
+                name: '',
+                design: '',
+                hq: '',
+                icTrainNo: '',
+                icTime: '',
+                bedSheets: 2,
+                pillowCover: 1,
+                blanket: 1,
+                allottedBed: '',
+            });
+        }
+    };
 
     useEffect(() => {
         fetch("/api/user")
@@ -75,16 +90,33 @@ function Page() {
                     value: item.cms_id,
                     label: item.cms_id,
                 }));
-                setCmsidOptions([{ value: '', label: 'Select Cmsid', id: "" }, ...options]);
+                setCmsidOptions([{ value: '', label: 'Select Cmsid', id: '' }, ...options]);
             })
             .catch((err) => {
                 console.error("Error fetching CMSID options:", err);
             });
+
+        fetch("/api/rooms")
+            .then((response) => response.json())
+            .then((data) => {
+                const options = data.data.map((item) => ({
+                    id: item.id,
+                    value: item.room_no,
+                    label: item.room_no,
+                }));
+                setRoomidOptions([{ value: '', label: 'Select Room', id: '' }, ...options]);
+            })
+            .catch((err) => {
+                console.error("Error fetching Room options:", err);
+            });
     }, []);
 
-    useEffect(() => {
-        const selectedOption = cmsidOptions.find((option) => option.value === formData.cmsid);
+    const selectedOption = useMemo(
+        () => cmsidOptions.find((option) => option.value === formData.cmsid),
+        [formData.cmsid, cmsidOptions]
+    );
 
+    useEffect(() => {
         if (selectedOption && selectedOption.id) {
             fetch(`/api/user/${selectedOption.id}`)
                 .then((response) => response.json())
@@ -101,7 +133,7 @@ function Page() {
                             bedSheets: data.data.bed_sheets || prevData.bedSheets,
                             pillowCover: data.data.pillow_cover || prevData.pillowCover,
                             blanket: data.data.blanket || prevData.blanket,
-                            allottedBed: data.data.allotted_bed || '',
+                            allottedBed: data.data.allottedBed || prevData.allottedBed,
                         }));
                     }
                 })
@@ -109,7 +141,13 @@ function Page() {
                     console.error("Error fetching CMSID data:", err);
                 });
         }
-    }, [formData.cmsid, cmsidOptions]);
+    }, [selectedOption]);
+
+    const formatDate = (date) => {
+        if (!date) return '';
+        const d = new Date(date);
+        return d.toISOString().slice(0, 16); // YYYY-MM-DDTHH:mm
+    };
 
     return (
         <>
@@ -121,7 +159,7 @@ function Page() {
                             <label>CMS Id:</label>
                             <select name="cmsid" value={formData.cmsid} onChange={handleChange}>
                                 {cmsidOptions.map((option) => (
-                                    <option key={option.id} value={option.value}>
+                                    <option key={`${option.id}-${option.value}`} value={option.value}>
                                         {option.label}
                                     </option>
                                 ))}
@@ -149,9 +187,10 @@ function Page() {
                             <label>Incoming Train No:</label>
                             <input type="text" name="icTrainNo" value={formData.icTrainNo} onChange={handleChange} />
                         </div>
+
                         <div>
                             <label>Incoming Time:</label>
-                            <input type="datetime-local" name="icTime" value={formData.icTime} onChange={handleChange} />
+                            <input type="datetime-local" name="icTime" value={formatDate(formData.icTime)} onChange={handleChange} />
                         </div>
 
                         <div>
@@ -171,9 +210,16 @@ function Page() {
 
                         <div>
                             <label>Allotted Bed:</label>
-                            <input type="text" name="allottedBed" value={formData.allottedBed} onChange={handleChange} />
+                            <select name="allottedBed" value={formData.allottedBed} onChange={handleChange}>
+                                {roomidOptions.map((option) => (
+                                    <option key={`${option.id}-${option.value}`} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                     </div>
+
                     <div className="button-div">
                         <button className="submitButton" type="submit">SUBMIT</button>
                     </div>
