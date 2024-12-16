@@ -20,6 +20,8 @@ function Page() {
         { value: '', label: 'Select Cmsid', id: '' },
     ]);
 
+    const [refreshKey, setRefreshKey] = useState(0);
+
     const [roomidOptions, setRoomidOptions] = useState([
         { value: '', label: 'Select Room', id: '' },
     ]);
@@ -58,6 +60,7 @@ function Page() {
             if (response.ok && resp.ok) {
                 console.log('Form submitted successfully:', result1);
                 alert('Form submitted successfully!');
+                setRefreshKey((prev)=>prev+1);
             } else {
                 console.error('Error submitting form:', response.ok ? result2 : result1);
                 alert(`Error: ${(response.ok ? result2.error.message : result1.error.message) || 'Unexpected error'}`);
@@ -109,7 +112,7 @@ function Page() {
             .catch((err) => {
                 console.error("Error fetching Room options:", err);
             });
-    }, []);
+    }, [refreshKey]);
 
     const selectedOption = useMemo(
         () => cmsidOptions.find((option) => option.value === formData.cmsid),
