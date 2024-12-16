@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import {supabase} from '@/utils/supabaseClient'; // Assuming supabaseClient is configured
+import {supabase} from "@/app/supabaseSetup"
+import { NextResponse } from "next/server"
 
 export async function GET(request, { params }) {
     try {
