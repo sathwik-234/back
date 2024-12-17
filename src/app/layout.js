@@ -46,7 +46,7 @@ export default function RootLayout({ children }) {
                 <div className="dropdown-content">
                     <a href="CheckIn">Check In Form</a>
                     <a href="NewEntry">New Entry Form</a>
-                    <a href="#form3">Form 3</a>
+                    <a href="CheckOut">Check Out Form</a>
                 </div>
             </div>
             

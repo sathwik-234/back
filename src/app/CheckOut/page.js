@@ -1,6 +1,7 @@
 "use client";
-import React, { useEffect, useMemo, useState } from 'react';
-import "./form1.css";
+import React from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import "../CheckIn/form1.css";
 
 function Page() {
     const [formData, setFormData] = useState({
@@ -8,11 +9,8 @@ function Page() {
         name: '',
         design: '',
         hq: '',
-        icTrainNo: '',
-        icTime: '',
-        bedSheets: 2,
-        pillowCover: 1,
-        blanket: 1,
+        toTime : '',
+        outTime: '',
         allottedBed: '',
     });
 
@@ -74,17 +72,16 @@ function Page() {
                 name: '',
                 design: '',
                 hq: '',
-                icTrainNo: '',
-                icTime: '',
-                bedSheets: 2,
-                pillowCover: 1,
-                blanket: 1,
+                toTime:'',
+                outTime: '',
                 allottedBed: '',
             });
         }
     };
 
     useEffect(() => {
+        console.log(formData);
+        console.log(roomidOptions)
         fetch("/api/user")
             .then((response) => response.json())
             .then((data) => {
@@ -99,7 +96,7 @@ function Page() {
                 console.error("Error fetching CMSID options:", err);
             });
 
-        fetch("/api/rooms")
+        fetch("/api/rooms_checkout")
             .then((response) => response.json())
             .then((data) => {
                 const options = data.data.map((item) => ({
@@ -112,31 +109,36 @@ function Page() {
             .catch((err) => {
                 console.error("Error fetching Room options:", err);
             });
-    }, [refreshKey]);
+    }, [formData.allottedBed]);
 
     const selectedOption = useMemo(
-        () => cmsidOptions.find((option) => option.value === formData.cmsid),
-        [formData.cmsid, cmsidOptions]
+        () => roomidOptions.find((option) => option.value === formData.allottedBed),
+        [formData.allottedBed, roomidOptions]
     );
 
+    // useEffect(()=>{
+        
+    //         .then((response)=>response.json())
+    //         .then((data)=>console.log(data))
+    //         .catch((err)=>console.log(err));
+    // },[formData.allottedBed])
+
     useEffect(() => {
+        console.log(2);
         if (selectedOption && selectedOption.id) {
-            fetch(`/api/user/${selectedOption.id}`)
+            fetch(`/api/rooms_checkout/${selectedOption.id}`)
                 .then((response) => response.json())
                 .then((data) => {
-                    // console.log(data);
-                    if (data.data) {
+                    console.log(data.data[0])
+                    if (data.data[0]) {
                         setFormData((prevData) => ({
-                            ...prevData,
-                            cmsid: selectedOption.value,
-                            name: data.data.crewname || '',
-                            design: data.data.designation || '',
-                            hq: data.data.hq || '',
-                            icTrainNo: data.data.ic_train_no || '',
+                            ...prevData,  
+                            cmsid: data.data[0].allotted_to,
+                            name: data.data[0].Crew['crewname'] || '',
+                            design: data.data[0].Crew['designation'] || '',
+                            hq: data.data[0].Crew['hq'] || '',
+                            toTime:data.data.toTime || '',
                             icTime: data.data.ic_time || '',
-                            bedSheets: data.data.bed_sheets || prevData.bedSheets,
-                            pillowCover: data.data.pillow_cover || prevData.pillowCover,
-                            blanket: data.data.blanket || prevData.blanket,
                             allottedBed: data.data.allottedBed || prevData.allottedBed,
                         }));
                     }
@@ -155,19 +157,30 @@ function Page() {
 
     return (
         <>
-            <h1 className="form-name">Check In Form</h1>
+            <h1 className="form-name">Check Out Form</h1>
             <div className="form-block">
                 <form onSubmit={handleSubmit}>
                     <div className="right-block">
-                        <div>
-                            <label>CMS Id:</label>
-                            <select name="cmsid" value={formData.cmsid} onChange={handleChange}>
-                                {cmsidOptions.map((option) => (
+                    <div>
+                            <label>Allotted Bed:</label>
+                            <select name="allottedBed" value={formData.allottedBed} onChange={handleChange}>
+                                {roomidOptions.map((option) => (
                                     <option key={`${option.id}-${option.value}`} value={option.value}>
                                         {option.label}
                                     </option>
                                 ))}
                             </select>
+                        </div>
+                        <div>
+                            <label>CMS Id:</label>
+                            {/* <select name="cmsid" value={formData.cmsid} onChange={handleChange}>
+                                {cmsidOptions.map((option) => (
+                                    <option key={`${option.id}-${option.value}`} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select> */}
+                            <input type='text' name='cmsid' value={formData.cmsid} onChange={handleChange}></input>
                         </div>
 
                         <div>
@@ -187,41 +200,17 @@ function Page() {
                     </div>
 
                     <div className="left-block">
+
                         <div>
-                            <label>Incoming Train No:</label>
-                            <input type="text" name="icTrainNo" value={formData.icTrainNo} onChange={handleChange} />
+                            <label>TO Time:</label>
+                            <input type="datetime-local" name="toTime" value={formatDate(formData.toTime)} onChange={handleChange} />
                         </div>
 
                         <div>
-                            <label>Incoming Time:</label>
-                            <input type="datetime-local" name="icTime" value={formatDate(formData.icTime)} onChange={handleChange} />
+                            <label>Outgoing Time:</label>
+                            <input type="datetime-local" name="outTime" value={formatDate(formData.outTime)} onChange={handleChange} />
                         </div>
 
-                        <div>
-                            <label>Bed Sheets:</label>
-                            <input type="number" name="bedSheets" value={formData.bedSheets} onChange={handleChange} />
-                        </div>
-
-                        <div>
-                            <label>Pillow Covers:</label>
-                            <input type="number" name="pillowCover" value={formData.pillowCover} onChange={handleChange} />
-                        </div>
-
-                        <div>
-                            <label>Blankets:</label>
-                            <input type="number" name="blanket" value={formData.blanket} onChange={handleChange} />
-                        </div>
-
-                        <div>
-                            <label>Allotted Bed:</label>
-                            <select name="allottedBed" value={formData.allottedBed} onChange={handleChange}>
-                                {roomidOptions.map((option) => (
-                                    <option key={`${option.id}-${option.value}`} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
                     </div>
 
                     <div className="button-div">
