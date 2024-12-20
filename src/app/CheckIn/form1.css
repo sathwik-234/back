@@ -17,8 +17,8 @@ body {
 
 form {
   display: flex;
-  width: 80%;
-  padding: 20px;
+  width: 90%;
+  padding: 10px;
   flex-wrap: wrap;
 }
 
@@ -36,7 +36,7 @@ form {
 
 .right-block, .left-block, .feedback-block {
   flex: 1;
-  margin-right: 200px;
+  margin-right: 150px;
 }
 
 .right-block div, .left-block div, .feedback-block div {
@@ -45,7 +45,7 @@ form {
 
 .feedback-block {
   width: 100%;
-  margin-top: 20px;
+  margin-right: 20px;
 }
 
 label {
@@ -64,6 +64,10 @@ select {
   border-radius: 4px;
   font-family: "Montserrat", sans-serif;
   box-sizing: border-box;
+}
+
+.bead{
+  font-size: 10px;
 }
 
 .button-div {

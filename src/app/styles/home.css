@@ -74,7 +74,7 @@
 .signature-footer {
     text-align: center; /* Center the text */
     font-size: 1rem; /* Small, signature-like font size */
-    color: #aaa; /* Subtle light gray color */
+    color: #3d3d3d; /* Subtle light gray color */
     font-style: italic; /* Give it a handwritten or personal touch */
     margin-top: 30px; /* Space from the content above */
     padding: 10px 0; /* Padding for spacing */
@@ -82,7 +82,7 @@
 
 .author {
     font-weight: bold; /* Bold the author's name for emphasis */
-    color: #f0a500; /* Use a warm color to make the name stand out */
+    color: #473327; /* Use a warm color to make the name stand out */
 }
 
 .buttons-container {
@@ -107,5 +107,5 @@
 }
 
 .button:hover {
-    background-color: #7B5F54;
+    background-color: #f2b157;
 }

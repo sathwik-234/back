@@ -230,6 +230,7 @@ function Page() {
                                     name="name"
                                     value={formData.name}
                                     onChange={handleChange}
+                                    className="bead"
                                 />
                             </div>
                             <div>

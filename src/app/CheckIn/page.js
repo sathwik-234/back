@@ -185,7 +185,7 @@ function Page() {
 
                         <div>
                             <label>Name:</label>
-                            <input type="text" name="name" value={formData.name} onChange={handleChange} />
+                            <input type="text" name="name" value={formData.name} onChange={handleChange} className='bead'/>
                         </div>
 
                         <div>
@@ -211,6 +211,19 @@ function Page() {
                         </div>
 
                         <div>
+                            <label>Allotted Bed:</label>
+                            <select name="allottedBed" value={formData.allottedBed} onChange={handleChange}>
+                                {roomidOptions.map((option) => (
+                                    <option key={`${option.id}-${option.value}`} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className='feedback-block'>
+                        <div>
                             <label>Bed Sheets:</label>
                             <input type="number" name="bedSheets" value={formData.bedSheets} onChange={handleChange} />
                         </div>
@@ -225,16 +238,6 @@ function Page() {
                             <input type="number" name="blanket" value={formData.blanket} onChange={handleChange} />
                         </div>
 
-                        <div>
-                            <label>Allotted Bed:</label>
-                            <select name="allottedBed" value={formData.allottedBed} onChange={handleChange}>
-                                {roomidOptions.map((option) => (
-                                    <option key={`${option.id}-${option.value}`} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
                     </div>
 
                     <div className="button-div">

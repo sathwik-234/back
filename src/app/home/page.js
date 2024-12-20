@@ -36,7 +36,7 @@ const Page = () => {
                         </button>
                     </div>
                     <div className='signature-footer'>
-                        <p>-done by <span className="author">"G.Pradeep Kumar"</span></p>
+                        <p>-done by <span className="author">G.Pradeep Kumar & G.Sai Sathwik</span></p>
                     </div>
                 </div>
             </div>

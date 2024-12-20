@@ -24,8 +24,8 @@ We aim to provide a seamless and user-friendly experience for passengers and vis
                 alt="Team Member"
                 className="team-photo"
               />
-              <h3>John Doe</h3>
-              <p>Founder & CEO</p>
+              <h3>Siva Naresh Parvatham</h3>
+              <p>Sr.DEE(OP)</p>
             </div>
             <div className="team-member">
               <img
@@ -33,8 +33,8 @@ We aim to provide a seamless and user-friendly experience for passengers and vis
                 alt="Team Member"
                 className="team-photo"
               />
-              <h3>Jane Smith</h3>
-              <p>Chief Operating Officer</p>
+              <h3>Sanchay Adari</h3>
+              <p>DEE(OP)</p>
             </div>
             <div className="team-member">
               <img
@@ -42,8 +42,8 @@ We aim to provide a seamless and user-friendly experience for passengers and vis
                 alt="Team Member"
                 className="team-photo"
               />
-              <h3>Michael Brown</h3>
-              <p>Head of Development</p>
+              <h3>S. Baliyar Singh</h3>
+              <p>ADEE(OP)</p>
             </div>
           </div>
         </section>
