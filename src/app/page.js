@@ -1,6 +1,6 @@
 "use client"
 import React from 'react';
-import "./home.css";
+import "./styles/home.css";
 import { useRouter } from 'next/navigation';
 
 const Page = () => {
