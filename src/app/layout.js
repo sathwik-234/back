@@ -28,6 +28,12 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <head>
+        <title>
+          R.R Governance
+        </title>
+        <link rel="icon" href="/logo.jpg" type="image/x-icon"></link>
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
       <div className="navbar-main">
         <div className="left-nav">
@@ -37,7 +43,7 @@ export default function RootLayout({ children }) {
         <div className="right-nav">
             <button className="nav-buttons" onClick={navigateHome}>Home</button>
             
-            <div className="dropdown">
+            {/* <div className="dropdown">
                 <button className="nav-buttons dropdown-button">
                     Forms
                     <span>   </span>
@@ -48,9 +54,9 @@ export default function RootLayout({ children }) {
                     <a href="NewEntry">New Entry Form</a>
                     <a href="CheckOut">Check Out Form</a>
                 </div>
-            </div>
+            </div> */}
             
-            <div className="dropdown">
+            {/* <div className="dropdown">
                 <button className="nav-buttons dropdown-button">
                     Reports
                     <span>   </span>
@@ -61,9 +67,15 @@ export default function RootLayout({ children }) {
                     <a href="#report2">Report 2</a>
                     <a href="#report3">Report 3</a>
                 </div>
+            </div> */}
+
+            <div className="nav-buttons">
+                <a href="/Help">Help & Support</a>
             </div>
             
-            <button className="nav-buttons">About Us</button>
+            <div className="nav-buttons" >
+                <a href="/AboutUs">About Us</a>
+            </div>
         </div>
     </div>
         {children}

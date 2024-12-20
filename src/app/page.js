@@ -1,7 +1,10 @@
+"use client"
 import React from 'react'
 import "./styles/home.css"
+import { useRouter } from 'next/navigation'
 
 function page() {
+    const nav = useRouter();
   return (
     <div className="home">
        <div className="middle">
@@ -15,6 +18,9 @@ function page() {
                    <div className="context">
                            It is a "B" cateogry running room having  50 beds capacity located near to Gopalapatnam Railway Station.
                    </div>
+                   <div className ="buttons" onClick={nav.push("/CheckIn")}>
+                        CheckIn
+                    </div>
                    <div className='signature-footer'>
                    <p>-done by <span className="author">"G.Pradeep Kumar"</span></p>
                    </div>

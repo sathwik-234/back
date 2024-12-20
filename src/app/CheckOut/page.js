@@ -1,28 +1,43 @@
 "use client";
-import React from 'react';
-import { useEffect, useMemo, useState } from 'react';
-import "../CheckIn/form1.css";
+import React, { useEffect, useState,useMemo } from "react";
+import { Rating, TextField, Button, Box, Typography, Grid, Select, MenuItem } from "@mui/material";
+import "./form2.css"
+import { useRouter } from 'next/navigation';
 
 function Page() {
-    const [formData, setFormData] = useState({
-        cmsid: '',
-        name: '',
-        design: '',
-        hq: '',
-        toTime : '',
-        outTime: '',
-        allottedBed: '',
-    });
+    const nav = useRouter()
 
-    const [cmsidOptions, setCmsidOptions] = useState([
-        { value: '', label: 'Select Cmsid', id: '' },
-    ]);
+    const formatDate = (date) => {
+        if (!date) return "";
+        const d = new Date(date);
+        const offset = d.getTimezoneOffset() * 60000;
+        const localDate = new Date(d - offset);
+        return localDate.toISOString().slice(0, 16);
+    };
 
     const [refreshKey, setRefreshKey] = useState(0);
 
-    const [roomidOptions, setRoomidOptions] = useState([
-        { value: '', label: 'Select Room', id: '' },
-    ]);
+    const [formData, setFormData] = useState({
+        cmsid: "",
+        name: "",
+        design: "",
+        hq: "",
+        outTrainNo: "",
+        outTime: formatDate(new Date()),
+        allottedBed: "",
+        breakfast : 0,
+        lunch : 0,
+        dinner : 0,
+        parcel : 0,
+        cleanliness: 0,
+        food: 0,
+        service: 0,
+        comfort: 0,
+        overall: 0,
+    });
+
+    const [cmsidOptions, setCmsidOptions] = useState([]);
+    const [roomidOptions, setRoomidOptions] = useState([]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -33,10 +48,19 @@ function Page() {
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
+    const handleRatingChange = (name, value) => {
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+    };
+
+    // const handleSubmit = ()=>{
+    //     console.log(formData);
+    //     alert(formData.cleanliness,formData.comfort);
+    // }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('/api/CheckInSubmit', {
+            const response = await fetch('/api/CheckOutSubmit', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -49,7 +73,7 @@ function Page() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ status: 'TRUE',allotted_to : formData.cmsid }),
+                body: JSON.stringify({ status: 'FALSE',allotted_to : null }),
             });
 
             const result1 = await response.json();
@@ -72,12 +96,36 @@ function Page() {
                 name: '',
                 design: '',
                 hq: '',
-                toTime:'',
+                outTrainNo:'',
                 outTime: '',
                 allottedBed: '',
+                breakfast : 0,
+                lunch : 0,
+                dinner : 0,
+                parcel : 0,
+                cleanliness: 0,
+                food: 0,
+                service: 0,
+                comfort: 0,
+                overall: 0,
             });
+            nav.push("/home");
         }
     };
+
+
+    // const resetForm = () => {
+    //     setFormData({
+    //         cmsid: "",
+    //         name: "",
+    //         design: "",
+    //         hq: "",
+    //         outTrainNo: "",
+    //         outTime: formatDate(new Date()),
+    //         allottedBed: "",
+            
+    //     });
+    // };
 
     useEffect(() => {
         console.log(formData);
@@ -116,13 +164,6 @@ function Page() {
         [formData.allottedBed, roomidOptions]
     );
 
-    // useEffect(()=>{
-        
-    //         .then((response)=>response.json())
-    //         .then((data)=>console.log(data))
-    //         .catch((err)=>console.log(err));
-    // },[formData.allottedBed])
-
     useEffect(() => {
         console.log(2);
         if (selectedOption && selectedOption.id) {
@@ -137,7 +178,7 @@ function Page() {
                             name: data.data[0].Crew['crewname'] || '',
                             design: data.data[0].Crew['designation'] || '',
                             hq: data.data[0].Crew['hq'] || '',
-                            toTime:data.data.toTime || '',
+                            outTrainNo:data.data.outTrainNo || '',
                             icTime: data.data.ic_time || '',
                             allottedBed: data.data.allottedBed || prevData.allottedBed,
                         }));
@@ -149,70 +190,122 @@ function Page() {
         }
     }, [selectedOption]);
 
-    const formatDate = (date) => {
-        if (!date) return '';
-        const d = new Date(date);
-        return d.toISOString().slice(0, 16); // YYYY-MM-DDTHH:mm
-    };
-
     return (
         <>
             <h1 className="form-name">Check Out Form</h1>
             <div className="form-block">
                 <form onSubmit={handleSubmit}>
-                    <div className="right-block">
-                    <div>
-                            <label>Allotted Bed:</label>
-                            <select name="allottedBed" value={formData.allottedBed} onChange={handleChange}>
-                                {roomidOptions.map((option) => (
-                                    <option key={`${option.id}-${option.value}`} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
+                        {/* Right Block */}
+                        <div className="right-block">
+                            <div>
+                                <label>Allotted Bed:</label>
+                                <select
+                                    name="allottedBed"
+                                    value={formData.allottedBed}
+                                    onChange={handleChange}
+                                >
+                                    {roomidOptions.map((option) => (
+                                        <option
+                                            key={`${option.id}-${option.value}`}
+                                            value={option.value}
+                                        >
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label>CMS Id:</label>
+                                <input
+                                    type="text"
+                                    name="cmsid"
+                                    value={formData.cmsid}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label>Name:</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label>Designation:</label>
+                                <input
+                                    type="text"
+                                    name="design"
+                                    value={formData.design}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label>HeadQuarters:</label>
+                                <input
+                                    type="text"
+                                    name="hq"
+                                    value={formData.hq}
+                                    onChange={handleChange}
+                                />
+                            </div>
                         </div>
-                        <div>
-                            <label>CMS Id:</label>
-                            {/* <select name="cmsid" value={formData.cmsid} onChange={handleChange}>
-                                {cmsidOptions.map((option) => (
-                                    <option key={`${option.id}-${option.value}`} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select> */}
-                            <input type='text' name='cmsid' value={formData.cmsid} onChange={handleChange}></input>
+
+                        {/* Left Block */}
+                        <div className="left-block">
+                            <div>
+                                <label>Outgoing Time:</label>
+                                <input
+                                    type="datetime-local"
+                                    name="outTime"
+                                    value={formatDate(formData.outTime)}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label>Outgoing Train No.:</label>
+                                <input
+                                    type="text"
+                                    name="outTrainNo"
+                                    value={formData.outTrainNo}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label>BreakFast:</label>
+                                <input type="number" name="breakfast" value={formData.breakfast} onChange={handleChange} min={0}></input>
+                            </div>
+                            <div>
+                                <label>Lunch:</label>
+                                <input type="number" name="lunch" value={formData.lunch} onChange={handleChange} min={0}></input>
+                            </div>
+                            <div>
+                                <label>Dinner:</label>
+                                <input type="number" name="dinner" value={formData.dinner} onChange={handleChange} min={0}></input>
+                            </div>
+                            <div>
+                                <label>Parcel:</label>
+                                <input type="number" name="parcel" value={formData.parcel} onChange={handleChange} min={0}></input>
+                            </div>
+                            
                         </div>
-
-                        <div>
-                            <label>Name:</label>
-                            <input type="text" name="name" value={formData.name} onChange={handleChange} />
-                        </div>
-
-                        <div>
-                            <label>Designation:</label>
-                            <input type="text" name="design" value={formData.design} onChange={handleChange} />
-                        </div>
-
-                        <div>
-                            <label>HeadQuarters:</label>
-                            <input type="text" name="hq" value={formData.hq} onChange={handleChange} />
-                        </div>
-                    </div>
-
-                    <div className="left-block">
-
-                        <div>
-                            <label>TO Time:</label>
-                            <input type="datetime-local" name="toTime" value={formatDate(formData.toTime)} onChange={handleChange} />
-                        </div>
-
-                        <div>
-                            <label>Outgoing Time:</label>
-                            <input type="datetime-local" name="outTime" value={formatDate(formData.outTime)} onChange={handleChange} />
-                        </div>
-
-                    </div>
-
+                <div className="feedback-block">
+                    <Grid item xs={12}>
+                        {["Cleanliness", "Food", "Service", "Comfort", "Overall"].map((field) => (
+                            <Box key={field} sx={{ marginBottom: "15px" }}>
+                                <Typography>{field}</Typography>
+                                <Rating
+                                    name={field.toLowerCase()}
+                                    value={formData[field.toLowerCase()]}
+                                    onChange={(event, value) =>
+                                        handleRatingChange(field.toLowerCase(), value)
+                                    }
+                                />
+                            </Box>
+                        ))}
+                    </Grid>
+                </div>
                     <div className="button-div">
                         <button className="submitButton" type="submit">SUBMIT</button>
                     </div>

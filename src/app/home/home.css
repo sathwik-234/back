@@ -16,8 +16,6 @@
 }
 
 /* Navbar and Footer should stay at top and bottom */
-
-
 .footer-main {
     flex-shrink: 0; /* Prevents the footer from resizing */
 }
@@ -66,6 +64,13 @@
     margin-bottom: 10px;
 }
 
+.text-container .context {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #54473F;
+    text-align: justify;
+}
+
 .signature-footer {
     text-align: center; /* Center the text */
     font-size: 1rem; /* Small, signature-like font size */
@@ -73,17 +78,34 @@
     font-style: italic; /* Give it a handwritten or personal touch */
     margin-top: 30px; /* Space from the content above */
     padding: 10px 0; /* Padding for spacing */
-  }
-  
-  .author {
+}
+
+.author {
     font-weight: bold; /* Bold the author's name for emphasis */
     color: #f0a500; /* Use a warm color to make the name stand out */
-  }
-  
+}
 
-.text-container .context {
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.button {
+    background-color: #765949;
+    color: #E9EED9;
+    width: 30%;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
     font-size: 1rem;
-    line-height: 1.5;
-    color: #54473F;
-    text-align: justify;
+    font-weight: bold;
+    font-family: "Montserrat", sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #7B5F54;
 }

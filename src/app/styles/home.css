@@ -1,47 +1,46 @@
-/* Full Page Layout */
-/* body, html {
+/* Reset for consistency */
+body, html {
     margin: 0;
     padding: 0;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-} */
+    font-family: "Montserrat", sans-serif;
+}
 
 /* Home Container */
 .home {
-    padding: 10px 20px;
+    padding: 10px 5%;
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
-/* Navbar and Footer should stay at top and bottom */
-
-
+/* Navbar and Footer */
 .footer-main {
     flex-shrink: 0; /* Prevents the footer from resizing */
 }
 
-/* Middle Section Fills Remaining Space */
+/* Middle Section */
 .middle {
     flex-grow: 1; /* Fills remaining space between navbar and footer */
     display: flex;
-    height: 540px;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
     align-items: center;
     justify-content: space-evenly;
     padding: 20px;
     background-color: #ccd0be;
     color: #54473F;
-    font-family: "Montserrat", sans-serif;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
+    gap: 20px; /* Space between items */
 }
 
 /* Image Container */
 .img-container {
-    width: 400px;
-    height: 400px;
-    margin-right: 20px;
+    width: 40%; /* Dynamic width */
+    max-width: 400px; /* Cap the width for larger screens */
+    height: auto; /* Maintain aspect ratio */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,18 +48,20 @@
 
 .img-container img {
     width: 100%;
-    height: 100%;
+    height: auto; /* Maintain aspect ratio */
     object-fit: cover;
     border-radius: 50%; /* Circular image */
 }
 
 /* Text Container */
 .text-container {
-    max-width: 600px;
+    flex: 1; /* Take up remaining space */
+    max-width: 600px; /* Cap the width for readability */
+    text-align: justify;
 }
 
 .text-container .Heading {
-    font-size: 3rem;
+    font-size: 2.5rem; /* Scales better on smaller screens */
     font-weight: bold;
     color: #54473F;
     margin-bottom: 10px;
@@ -68,22 +69,60 @@
 
 .text-container .context {
     font-size: 1rem;
-    line-height: 1.5;
+    line-height: 1.6;
     color: #54473F;
-    text-align: justify;
 }
 
+/* Footer Signature */
 .signature-footer {
-    text-align: center; /* Center the text */
-    font-size: 1rem; /* Small, signature-like font size */
-    color: #aaa; /* Subtle light gray color */
-    font-style: italic; /* Give it a handwritten or personal touch */
-    margin-top: 30px; /* Space from the content above */
-    padding: 10px 0; /* Padding for spacing */
-  }
-  
-  .author {
-    font-weight: bold; /* Bold the author's name for emphasis */
-    color: #f0a500; /* Use a warm color to make the name stand out */
-  }
-  
+    text-align: center;
+    font-size: 1rem;
+    color: #aaa;
+    font-style: italic;
+    margin-top: 30px;
+    padding: 10px 0;
+}
+
+.signature-footer .author {
+    font-weight: bold;
+    color: #f0a500;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+    .middle {
+        flex-direction: column; /* Stack elements vertically */
+        text-align: center; /* Center content for smaller screens */
+    }
+
+    .img-container {
+        width: 60%; /* Wider for smaller screens */
+        max-width: 300px; /* Adjust max width */
+    }
+
+    .text-container .Heading {
+        font-size: 2rem; /* Adjust font size */
+    }
+
+    .text-container .context {
+        font-size: 0.9rem; /* Adjust font size */
+    }
+}
+
+@media (max-width: 480px) {
+    .middle {
+        padding: 10px; /* Reduce padding */
+    }
+
+    .img-container {
+        width: 80%; /* Expand to fit screen */
+    }
+
+    .text-container .Heading {
+        font-size: 1.8rem; /* Smaller font for smaller screens */
+    }
+
+    .text-container .context {
+        font-size: 0.85rem; /* Smaller font */
+    }
+}

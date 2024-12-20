@@ -1,15 +1,26 @@
 "use client";
 import React, { useEffect, useMemo, useState } from 'react';
 import "./form1.css";
+import { useRouter } from 'next/navigation';
 
 function Page() {
+    const nav = useRouter();
+    
+    const formatDate = (date) => {
+        if (!date) return '';
+        const d = new Date(date);
+        const offset = d.getTimezoneOffset() * 60000; // Offset in milliseconds
+        const localDate = new Date(d - offset); // Adjust to local timezone
+        return localDate.toISOString().slice(0, 16); // Format as YYYY-MM-DDTHH:mm
+    };
+
     const [formData, setFormData] = useState({
         cmsid: '',
         name: '',
         design: '',
         hq: '',
         icTrainNo: '',
-        icTime: '',
+        icTime: formatDate(new Date()),
         bedSheets: 2,
         pillowCover: 1,
         blanket: 1,
@@ -75,12 +86,13 @@ function Page() {
                 design: '',
                 hq: '',
                 icTrainNo: '',
-                icTime: '',
+                icTime: formatDate(new Date()),
                 bedSheets: 2,
                 pillowCover: 1,
                 blanket: 1,
                 allottedBed: '',
             });
+            nav.push("/home")
         }
     };
 
@@ -114,6 +126,7 @@ function Page() {
             });
     }, [refreshKey]);
 
+
     const selectedOption = useMemo(
         () => cmsidOptions.find((option) => option.value === formData.cmsid),
         [formData.cmsid, cmsidOptions]
@@ -133,7 +146,7 @@ function Page() {
                             design: data.data.designation || '',
                             hq: data.data.hq || '',
                             icTrainNo: data.data.ic_train_no || '',
-                            icTime: data.data.ic_time || '',
+                            icTime: data.data.ic_time || prevData.icTime,
                             bedSheets: data.data.bed_sheets || prevData.bedSheets,
                             pillowCover: data.data.pillow_cover || prevData.pillowCover,
                             blanket: data.data.blanket || prevData.blanket,
@@ -147,11 +160,11 @@ function Page() {
         }
     }, [selectedOption]);
 
-    const formatDate = (date) => {
-        if (!date) return '';
-        const d = new Date(date);
-        return d.toISOString().slice(0, 16); // YYYY-MM-DDTHH:mm
-    };
+    // const formatDate = (date) => {
+    //     if (!date) return '';
+    //     const d = new Date(date);
+    //     return d.toISOString().slice(0, 16); // YYYY-MM-DDTHH:mm
+    // };
 
     return (
         <>
@@ -194,7 +207,7 @@ function Page() {
 
                         <div>
                             <label>Incoming Time:</label>
-                            <input type="datetime-local" name="icTime" value={formatDate(formData.icTime)} onChange={handleChange} />
+                            <input type="datetime-local" name="icTime" value={formData.icTime} onChange={handleChange} />
                         </div>
 
                         <div>

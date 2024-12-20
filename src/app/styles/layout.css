@@ -12,7 +12,11 @@
     color: #E9EED9;
 }
 
-
+a {
+    text-decoration: none; /* Removes underline */
+    color: inherit; /* Inherits the text color from the parent element */
+  }
+  
 
 /* Navbar Main Container */
 .navbar-main {
