@@ -129,7 +129,7 @@ function page() {
 
   return (
     <>
-        <h1 className="form-name">Check In Form</h1>
+        <h1 className="form-name">Complaint Form</h1>
             <div className="form-block">
                 <form onSubmit={handleSubmit}>
                     <div className="right-block">

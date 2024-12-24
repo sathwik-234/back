@@ -99,13 +99,53 @@ select {
   color: #54473F;
 }
 
+/* Mobile View Adjustments */
 @media (max-width: 768px) {
+  /* Adjust the form layout to column for mobile */
+  .form-block {
+    flex-direction: column;
+    margin-right: 20px; /* Reduce margin for better spacing */
+    margin-left: 20px; /* Reduce margin for better spacing */
+  }
+
   form {
-      flex-direction: column;
+    flex-direction: column; /* Stack form inputs vertically */
+    width: 100%; /* Full width */
+    padding: 10px; /* Adjust padding for mobile */
+  }
+
+  .form-name {
+    font-size: 1.5rem; /* Smaller font size for mobile */
+    padding: 5px 10px;
   }
 
   .right-block, .left-block, .feedback-block {
-      flex: 1 1 100%;
-      margin-right: 0;
+    flex: 1 1 100%; /* Allow blocks to take full width */
+    margin-right: 0; /* Remove margin for mobile */
+    margin-bottom: 20px; /* Space between blocks */
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="datetime-local"],
+  select {
+    width: 90%; /* Make inputs take full width */
+    padding: 12px; /* Increase padding for better touch targets */
+    font-size: 1rem; 
+    /* margin-left: 5px; */
+    /* Adjust font size for readability */
+  }
+
+  .submitButton {
+    width: 90%; /* Make submit button full-width */
+    padding: 15px;
+    margin-right: 30px;
+    font-size: 1.2rem;
+    /* margin-left: px; Adjust font size for mobile */
+    align-self: center; /* Center the submit button */
+  }
+
+  .button-div {
+    width: 100%; /* Make button div take full width */
   }
 }
