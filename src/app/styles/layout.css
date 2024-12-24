@@ -94,3 +94,21 @@ a {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+@media (max-width : 1024px) {
+    .app-name{
+        display: none;
+    }
+        .nav-buttons {
+            padding: 8px 12px; /* Larger padding for mobile buttons */
+            font-size: 1.2rem; /* Larger font size for better readability on small screens */
+            width: 80%; /* Take up more width for mobile devices */
+            margin: 10px 0; /* Add margin for spacing between buttons */
+            border-radius: 8px; /* Slightly round the corners for a better mobile look */
+        }
+        
+        /* Optional: Change the background color when hovered on mobile */
+        .nav-buttons:hover {
+            background-color: #f2b157; /* A slightly lighter color for hover effect on mobile */
+        }
+}

@@ -1,18 +1,18 @@
 /* Full Page Layout */
-/* body, html {
-    margin: 0;
-    padding: 0;
+body, html {
+    /* margin: 0;
+    padding: 0; */
     height: 100vh;
     display: flex;
     flex-direction: column;
-} */
+}
 
 /* Home Container */
 .home {
-    padding: 10px 20px;
+    padding: 2% 2%;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 80%;
 }
 
 /* Navbar and Footer should stay at top and bottom */
@@ -24,10 +24,10 @@
 .middle {
     flex-grow: 1; /* Fills remaining space between navbar and footer */
     display: flex;
-    height: 540px;
+    height: 10%;
     align-items: center;
     justify-content: space-evenly;
-    padding: 20px;
+    padding: 15%;
     background-color: #ccd0be;
     color: #54473F;
     font-family: "Montserrat", sans-serif;
@@ -108,4 +108,37 @@
 
 .button:hover {
     background-color: #f2b157;
+}
+
+
+@media (max-width: 1024px) {
+    .middle {
+        padding: 10%;
+        flex-direction: column; /* Stack image and text vertically for mobile and tablet */
+        justify-content: center;
+    }
+
+    .img-container {
+        width: 90%; /* Adjust image container size for smaller screens */
+        height: 90%;
+        margin-bottom: 10%;
+        object-fit: fill;
+    }
+
+    .text-container .Heading {
+        font-size: 5vw; /* Adjust heading font size for smaller screens */
+    }
+
+    .text-container .context {
+        font-size: 3.5vw; /* Adjust context font size for smaller screens */
+    }
+
+    .signature-footer {
+        font-size: 4vw; /* Adjust footer font size for smaller screens */
+    }
+
+    .button {
+        width: 45%; /* Button width adjusted for smaller screens */
+        font-size: 4vw; /* Adjust button font size for smaller screens */
+    }
 }
