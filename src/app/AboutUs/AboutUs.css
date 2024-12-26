@@ -19,7 +19,7 @@ body {
   
   .mission-section, .team-section, .contact-section {
     margin-bottom: 30px;
-    text-align: center;
+    text-align:justify;
   }
   
   .mission-section h2, .team-section h2, .contact-section h2 {
@@ -38,7 +38,7 @@ body {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 10px;
   }
   
   .team-member {

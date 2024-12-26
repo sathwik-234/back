@@ -10,14 +10,33 @@ function AboutUs() {
           <h2>Running Room Management</h2>
           <p>
           Welcome to the official Room Booking Platform of the East Coast Railway, Government of India!
+          Welcome to the Room Booking Platform for Running Rooms, developed by East Coast Railway, Waltair Division. This platform is designed to offer a seamless and efficient lodging experience for crew members and officials. It streamlines the booking process while catering to their specific needs.
 
-We aim to provide a seamless and user-friendly experience for passengers and visitors seeking comfortable and affordable lodging facilities across our stations and affiliated locations. Our platform ensures a smooth booking process, catering to the needs of railway travelers, officials, and guests.
+Equipped with advanced functionalities, the system enables real-time monitoring of bed availability and minimizes waiting times, ensuring timely rest for the crew. Transitioning from manual calculations, the software now proficiently automates key metrics, including crew counts by HQ, running room rest durations, meal consumption, bedsheet and blanket utilization, and peak occupancy analysis for any specified period.
           </p>
         </section>
 
         <section className="team-section">
           <h2>Meet Our Department</h2>
           <div className="team-grid">
+          <div className="team-member">
+              <img
+                src="https://via.placeholder.com/150"
+                alt="Team Member"
+                className="team-photo"
+              />
+              <h3>XXX</h3>
+              <p>DRM</p>
+            </div>
+            <div className="team-member">
+              <img
+                src="https://via.placeholder.com/150"
+                alt="Team Member"
+                className="team-photo"
+              />
+              <h3>Manoj Kumar Sahoo</h3>
+              <p>ADRM(OP)</p>
+            </div>
             <div className="team-member">
               <img
                 src="https://via.placeholder.com/150"
