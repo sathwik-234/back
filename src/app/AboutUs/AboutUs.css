@@ -16,6 +16,11 @@ body {
     max-width: 800px;
     margin: 0 auto;
   }
+
+  .highlight {
+    color: #d2f13a;
+    font-weight: bold;
+  }
   
   .mission-section, .team-section, .contact-section {
     margin-bottom: 30px;
@@ -26,6 +31,7 @@ body {
     font-size: 1.8rem;
     color: #54473F;
     margin-bottom: 10px;
+    text-align: center;
   }
   
   .mission-section p, .contact-section p {

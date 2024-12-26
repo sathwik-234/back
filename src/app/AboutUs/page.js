@@ -7,7 +7,7 @@ function AboutUs() {
     <div className="about-page">
       <div className="about-content">
         <section className="mission-section">
-          <h2>Running Room Management</h2>
+          <h2 >About This Application</h2>
           <p>
           Welcome to the official Room Booking Platform of the East Coast Railway, Government of India!
           Welcome to the Room Booking Platform for Running Rooms, developed by East Coast Railway, Waltair Division. This platform is designed to offer a seamless and efficient lodging experience for crew members and officials. It streamlines the booking process while catering to their specific needs.
