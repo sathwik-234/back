@@ -98,6 +98,13 @@ select {
   color: #54473F;
 }
 
+.resizable-textarea {
+  width: 300%; /* Make textarea take full width */
+  min-height: 100px; /* Minimum height for textarea */
+  padding: 12px; /* Larger padding */
+  font-size: 1rem; /* Adjust font size */
+}
+
 /* Mobile View Adjustments */
 @media (max-width: 768px) {
   .form-block {
