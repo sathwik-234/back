@@ -10,6 +10,7 @@ export const POST = async (req) => {
         const { data, error } = await supabase.from("CheckOut").insert([
             {
                 cms_id: formData.cmsid,
+                check_in_id: formData.checkinId,
                 out_train_no: formData.outTrainNo,
                 out_time: formData.outTime,
                 allotted_bed: formData.allottedBed,

@@ -19,6 +19,7 @@ function Page() {
 
     const [formData, setFormData] = useState({
         cmsid: "",
+        checkinId : "",
         name: "",
         design: "",
         hq: "",
@@ -57,9 +58,40 @@ function Page() {
     //     alert(formData.cleanliness,formData.comfort);
     // }
 
+    useEffect(() => {
+        if (formData.cmsid) {
+            // Fetch the data only if cmsid is present
+            const fetchData = async () => {
+                try {
+                    const res = await fetch(`/api/CheckInSubmit/${formData.cmsid}`);
+                    if (!res.ok) {
+                        throw new Error(`Error fetching check-in data: ${res.statusText}`);
+                    }
+                    const data = await res.json();
+                    console.log('CheckInSubmit data:', data);
+    
+                    if (data && data.data && data.data[0]?.id) {
+                        setFormData((prevData) => ({
+                            ...prevData,
+                            checkinId: data.data[0].id,
+                        }));
+                    } else {
+                        console.error('Invalid data format received from CheckInSubmit');
+                    }
+                } catch (err) {
+                    console.error("Error fetching data:", err);
+                }
+            };
+    
+            fetchData();
+        }
+    }, [formData.cmsid]);  
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
+    
         try {
+            // Fetch CheckOutSubmit API
             const response = await fetch('/api/CheckOutSubmit', {
                 method: 'POST',
                 headers: {
@@ -67,42 +99,43 @@ function Page() {
                 },
                 body: JSON.stringify(formData),
             });
-
+    
             const resp = await fetch(`/api/rooms/${formData.allottedBed}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ status: 'FALSE',allotted_to : null }),
+                body: JSON.stringify({ status: 'FALSE', allotted_to: null }),
             });
-
+    
             const result1 = await response.json();
             const result2 = await resp.json();
-
+    
             if (response.ok && resp.ok) {
                 console.log('Form submitted successfully:', result1);
                 alert('Form submitted successfully!');
-                setRefreshKey((prev)=>prev+1);
             } else {
                 console.error('Error submitting form:', response.ok ? result2 : result1);
                 alert(`Error: ${(response.ok ? result2.error.message : result1.error.message) || 'Unexpected error'}`);
             }
+    
         } catch (err) {
             console.error('Error during form submission:', err);
-            alert('An unexpected error occurred.');
+            alert(`Failed to submit: ${err.message}`);
         } finally {
+            // Reset form
             setFormData({
                 cmsid: '',
                 name: '',
                 design: '',
                 hq: '',
-                outTrainNo:'',
+                outTrainNo: '',
                 outTime: '',
                 allottedBed: '',
-                breakfast : 0,
-                lunch : 0,
-                dinner : 0,
-                parcel : 0,
+                breakfast: 0,
+                lunch: 0,
+                dinner: 0,
+                parcel: 0,
                 cleanliness: 0,
                 food: 0,
                 service: 0,
@@ -112,6 +145,7 @@ function Page() {
             nav.push("/home");
         }
     };
+    
 
 
     // const resetForm = () => {
