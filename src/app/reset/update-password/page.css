@@ -9,12 +9,10 @@ body {
     margin: 0;
 }
 
-
-
 form input {
     font-family: 'Montserrat', sans-serif;
     width: 250px;
-    padding: 2rem;
+    padding: 0.7rem;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -148,21 +146,32 @@ form input:focus {
 }
 
 /* Links Container */
+/* Links Container */
 .links-container {
     display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 1.5rem;
+    justify-content: space-between; /* Spreads links evenly across the container */
+    align-items: center;           /* Vertically centers the links */
+    width: 100%;                   /* Makes the container span the full width */
+    margin-top: 1rem;              /* Adds space above the container */
+    margin-bottom: 1.5rem;         /* Adds space below the container */
 }
 
-.links-container p {
-    font-size: 0.9rem;
-    color: #54473F;
-    cursor: pointer;
+.links-container a {
+    font-size: 0.9rem;             /* Sets a consistent font size */
+    color: #54473F;                /* Matches the link color to your theme */
+    cursor: pointer;               /* Changes cursor to pointer for clickable links */
+    text-decoration: none;         /* Removes the underline from links */
+    padding: 0.5rem 1rem;          /* Adds padding for better click area */
+    border: 1px solid transparent; /* Adds a transparent border for hover effect */
+    border-radius: 5px;            /* Rounds the corners for a smooth look */
+    transition: all 0.3s ease-in-out; /* Smooth transition for hover effects */
 }
 
-.links-container p:hover {
-    text-decoration: underline;
+.links-container a:hover {
+    text-decoration: underline;    /* Underlines text on hover */
+    color: #cfba5d;                /* Slightly darkens the link color on hover */
+    border: 1px solid #54473F;     /* Highlights the border on hover */
+    background-color: #F8F3EF;     /* Adds a light background on hover */
 }
 
 /* Button Styling */
@@ -183,6 +192,15 @@ form button {
     align-items: center;
 }
 
+/* Spinner Styling inside Button */
+form button .spinner-border {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #fff;
+    border-top: 2px solid #f2b157;
+    animation: spinner 1s linear infinite;
+    margin-right: 10px; /* Space between spinner and button text */
+}
 
 @keyframes spinner {
     0% {
@@ -193,7 +211,15 @@ form button {
     }
 }
 
+/* Spinner Visibility when Pending */
+form button:disabled .spinner-border {
+    display: inline-block;
+}
 
+/* Remove button text when spinner is visible */
+form button:disabled span {
+    visibility: hidden;
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -211,8 +237,19 @@ form button {
         width: 90%;
     }
 
-    form input {
+    form input,
+    form label {
+        display: block;
         width: 100%;
+    }
+    
+    form label {
+        display: block;
+        margin-bottom: 0.5rem; /* Add space between label and input */
+    }
+
+    form input {
+        margin-bottom: 1rem; /* Add space after input */
     }
 
     /* Adjust form button width on small screens */
@@ -221,3 +258,4 @@ form button {
         padding: 0.8rem;
     }
 }
+

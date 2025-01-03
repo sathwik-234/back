@@ -4,20 +4,18 @@ import { NextResponse } from "next/server";
 export const POST = async (req) => {
   try {
     const formData = await req.json();
-    const { cmsid, name, design, hq } = formData;
+    const { cms_id, crewname, designation, hq,email } = formData;
     console.log(formData);
-    if (!cmsid || !name || !design || !hq) {
+    if (!cms_id || !crewname || !designation || !hq) {
       return NextResponse.json(
         { message: "Missing required fields" },
         { status: 400 }
       );
     }
-
-    // Check if the crew member already exists
     const { data: crewData, error: crewError } = await supabase
       .from("Crew")
       .select("*")
-      .eq("cms_id", cmsid)
+      .eq("cms_id", cms_id)
       .single(); 
     console.log(crewData);
     if (crewData) {
@@ -30,10 +28,11 @@ export const POST = async (req) => {
     // Insert the new crew member
     const { data, error } = await supabase.from("Crew").insert([
       {
-        cms_id: cmsid,
-        crewname: name,
-        designation: design,
+        cms_id: cms_id,
+        crewname: crewname,
+        designation: designation,
         hq: hq,
+        email: email,
       },
     ]);
 
