@@ -8,16 +8,13 @@ import "@/app/styles/home.css"
 
 const Page = () => {
     const [searchParams, setSearchParams] = useState(null);
-  const router = useRouter();
-  
   useEffect(() => {
-    // Ensure this code runs only on the client-side
     const params = new URLSearchParams(window.location.search);
     setSearchParams(params);
-  }, []);  // Empty dependency array ensures this runs once after the component mounts
+  }, []);  
 
   if (!searchParams) {
-    return <div>Loading...</div>;  // Render a loading state until the searchParams are set
+    return <div>Loading...</div>;  
   }
     const nav = useRouter();
     const authType = searchParams.get("authtype") || "login";
