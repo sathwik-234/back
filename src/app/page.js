@@ -1,12 +1,12 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import "./styles/home.css";
-import { sendResetPasswordEmail, signinWithEmailPassword, signout, signupWithEmailPassword } from "@/utils/actions";
 import { Box, CircularProgress } from "@mui/material";
-import { display } from "@mui/system";
+import { sendResetPasswordEmail, signinWithEmailPassword, signout, signupWithEmailPassword } from "@/utils/actions";
+import dynamic from 'next/dynamic';  // Dynamic import to disable SSR for this part
 
-const Page = () => {
+const Page = dynamic(() => import(PageCo), { ssr: false });
+const PageCo = () => {
     const searchParams = useSearchParams();
     const nav = useRouter();
     const authType = searchParams.get("authtype") || "login";
