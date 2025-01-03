@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import "./styles/home.css";
 import { sendResetPasswordEmail, signinWithEmailPassword, signout, signupWithEmailPassword } from "@/utils/actions";
@@ -135,7 +135,8 @@ const Page = () => {
     
 
     return (
-        <div className="container">
+        <Suspense fallback={<div>Loading...</div>}>
+            <div className="container">
             <div>
                 <form action={signout}>
                     <button type="submit">Sign Out</button>
@@ -281,6 +282,7 @@ const Page = () => {
                 
             </form>
         </div>
+        </Suspense>
     );
 };
 
