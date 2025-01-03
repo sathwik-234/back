@@ -3,10 +3,11 @@ import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Box, CircularProgress } from "@mui/material";
 import { sendResetPasswordEmail, signinWithEmailPassword, signout, signupWithEmailPassword } from "@/utils/actions";
+import "@/app/styles/home.css"
 
 
 const Page = () => {
-    const searchParams = useSearchParams();
+    const searchParams = new URLSearchParams(document.location.search)
     const nav = useRouter();
     const authType = searchParams.get("authtype") || "login";
     
