@@ -7,7 +7,18 @@ import "@/app/styles/home.css"
 
 
 const Page = () => {
-    const searchParams = new URLSearchParams(document.location.search)
+    const [searchParams, setSearchParams] = useState(null);
+  const router = useRouter();
+  
+  useEffect(() => {
+    // Ensure this code runs only on the client-side
+    const params = new URLSearchParams(window.location.search);
+    setSearchParams(params);
+  }, []);  // Empty dependency array ensures this runs once after the component mounts
+
+  if (!searchParams) {
+    return <div>Loading...</div>;  // Render a loading state until the searchParams are set
+  }
     const nav = useRouter();
     const authType = searchParams.get("authtype") || "login";
     
@@ -135,7 +146,6 @@ const Page = () => {
     
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
             <div className="container">
             <div>
                 <form action={signout}>
@@ -282,7 +292,6 @@ const Page = () => {
                 
             </form>
         </div>
-        </Suspense>
     );
 };
 
