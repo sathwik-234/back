@@ -3,10 +3,9 @@ import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Box, CircularProgress } from "@mui/material";
 import { sendResetPasswordEmail, signinWithEmailPassword, signout, signupWithEmailPassword } from "@/utils/actions";
-import dynamic from 'next/dynamic';  // Dynamic import to disable SSR for this part
 
-const Page = dynamic(() => import(PageCo), { ssr: false });
-const PageCo = () => {
+
+const Page = () => {
     const searchParams = useSearchParams();
     const nav = useRouter();
     const authType = searchParams.get("authtype") || "login";
