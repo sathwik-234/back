@@ -1,21 +1,13 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Box, CircularProgress } from "@mui/material";
+import "./styles/home.css";
 import { sendResetPasswordEmail, signinWithEmailPassword, signout, signupWithEmailPassword } from "@/utils/actions";
-import "@/app/styles/home.css"
+import { Box, CircularProgress } from "@mui/material";
 
 
-const Page = () => {
-    const [searchParams, setSearchParams] = useState(null);
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    setSearchParams(params);
-  }, []);  
-
-  if (!searchParams) {
-    return <div>Loading...</div>;  
-  }
+const PageCo = () => {
+    const searchParams = useSearchParams();
     const nav = useRouter();
     const authType = searchParams.get("authtype") || "login";
     
@@ -143,7 +135,7 @@ const Page = () => {
     
 
     return (
-            <div className="container">
+        <div className="container">
             <div>
                 <form action={signout}>
                     <button type="submit">Sign Out</button>
@@ -291,5 +283,13 @@ const Page = () => {
         </div>
     );
 };
+
+const Page = ()=>{
+    return(
+        <Suspense fallback = {<div>Loading...</div>}>
+            <PageCo/>
+        </Suspense>
+    )
+}
 
 export default Page;
