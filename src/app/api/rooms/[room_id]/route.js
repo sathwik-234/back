@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 
 export const PATCH = async (req,{params},res) => {
 
-    const room_id = await params.room_id
+    const {room_id} = await params
 
     const req_data = await req.json();
 
