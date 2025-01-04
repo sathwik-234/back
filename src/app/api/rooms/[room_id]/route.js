@@ -22,6 +22,7 @@ export const GET = async (req,{params},res) => {
     const {room_id}= await params
 
     const {data,error} = await supabase.from('Rooms').select('*').eq("room_no",room_id)
+    console.log(data)
 
     if(error){
         return NextResponse.json({error},{status : 500})

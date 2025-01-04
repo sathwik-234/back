@@ -128,27 +128,26 @@ function CheckOut() {
     }
   }, [formData.cmsid]);
 
+  useEffect(() => {
+  fetch(`/api/rooms/${formData.allottedBed}`)
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data);
+      if(data.data.status === "FALSE"){
+          alert("Room is already checked out.");
+          setVerified(false);
+      }else{
+          setVerified(true);
+      }
+  })
+  .catch((err) => {
+      setError(err.message);
+  })},[formData.allottedBed]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setButtonDisabled(true);
     try {
-        const res = await fetch(`/api/rooms/${formData.allottedBed}`)
-        .then((response) => {response.json()})
-        .then((data) => {
-            if(data.data.status === "FALSE"){
-                alert("Room is already checked out.");
-                setVerified(false);
-                signout();
-                nav.push("/");
-            }else{
-                setVerified(true);
-            }
-        })
-        .catch((err) => {
-            setError(err.message);
-            signout();
-            nav.push("/");
-        });
         if(verified){
             const response = await fetch("/api/CheckOutSubmit", {
                 method: "POST",
