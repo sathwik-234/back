@@ -1,19 +1,19 @@
-body {
-    background-color: #E9EED9;
-    font-family: "Montserrat",sans-serif;
+body{
+  overflow: hidden;
 }
+
 
 .about-page {
     background-color: #ccd0be;
     font-family: "Montserrat";
-    margin: 20px 50px;
-    padding: 20px;
+    margin: 10px 20px;
+    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 8px 10px rgba(84, 71, 63, 0.2);
   }
   
   .about-content {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
   }
 
@@ -23,7 +23,7 @@ body {
   }
   
   .mission-section, .team-section, .contact-section {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     text-align:justify;
   }
   
@@ -32,6 +32,15 @@ body {
     color: #54473F;
     margin-bottom: 10px;
     text-align: center;
+  }
+
+  .mission-section h2{
+    margin-top: 10px;
+  }
+
+  .team-section h2{
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
   
   .mission-section p, .contact-section p {
@@ -50,7 +59,7 @@ body {
   .team-member {
     text-align: center;
     flex: 1;
-    max-width: 200px;
+    max-width: 180px;
   }
   
   .team-photo {

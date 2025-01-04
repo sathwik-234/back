@@ -1,9 +1,12 @@
 "use client";
 import React, { useEffect, useMemo, useState } from 'react';
-import "./form1.css";
+import "./form1.css"
 import { useRouter } from 'next/navigation';
+import { useEmail } from '@/app/contexts/EmailContext';
+import { signout } from '@/utils/actions';
+import { Box, CircularProgress } from '@mui/material';
 
-function Page() {
+function CheckIn() {
     const nav = useRouter();
     
     const formatDate = (date) => {
@@ -25,11 +28,13 @@ function Page() {
         pillowCover: 1,
         blanket: 1,
         allottedBed: '',
+        arrTime : ''
     });
 
-    const [cmsidOptions, setCmsidOptions] = useState([
-        { value: '', label: 'Select Cmsid', id: '' },
-    ]);
+    const [user,setUser] = useState(null);
+    const [error,setError] = useState(null);
+    const [loading,setLoading] = useState(true);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
 
     const [refreshKey, setRefreshKey] = useState(0);
 
@@ -46,8 +51,31 @@ function Page() {
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
+    useEffect(() => {
+        if (user) {
+          fetch(`/api/getCrewDetails/${user.email}`)
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+              setFormData((prevData) => ({
+                ...prevData,
+                cmsid: data.data.cms_id || '',
+                name: data.data.crewname || '',
+                design: data.data.designation || '',
+                hq: data.data.hq || '',
+              }));
+              setLoading(false);
+            })
+            .catch(() => {
+              setError(true);
+              setLoading(false);
+            });
+        }
+      }, [user]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setButtonDisabled(true);
         try {
             const response = await fetch('/api/CheckInSubmit', {
                 method: 'POST',
@@ -92,26 +120,23 @@ function Page() {
                 blanket: 1,
                 allottedBed: '',
             });
-            nav.push("/home")
+            setButtonDisabled(false);
+            signout()
+            nav.push("/")
         }
     };
 
     useEffect(() => {
-        fetch("/api/user")
-            .then((response) => response.json())
+        fetch("/api/auth")
+            .then((res) => res.json())
             .then((data) => {
-                const options = data.data.map((item) => ({
-                    id: item.id,
-                    value: item.cms_id,
-                    label: item.cms_id,
-                }));
-                setCmsidOptions([{ value: '', label: 'Select Cmsid', id: '' }, ...options]);
+                setUser(data.user);
             })
-            .catch((err) => {
-                console.error("Error fetching CMSID options:", err);
+            .catch(() => {
+                setError(true);
+                setLoading(false);
             });
-
-        fetch("/api/rooms")
+            fetch("/api/rooms")
             .then((response) => response.json())
             .then((data) => {
                 const options = data.data.map((item) => ({
@@ -126,39 +151,19 @@ function Page() {
             });
     }, [refreshKey]);
 
+    if (loading) return (
+        <div className="home-loading">
+          <Box sx={{ display: 'flex' }}>
+            <CircularProgress size="50px" sx={{ color: '#54473F' }} />
+          </Box>
+        </div>
+      );
+    
+      if (error) return <div className="error">An error occurred. Please try again later.</div>;
 
-    const selectedOption = useMemo(
-        () => cmsidOptions.find((option) => option.value === formData.cmsid),
-        [formData.cmsid, cmsidOptions]
-    );
-
-    useEffect(() => {
-        if (selectedOption && selectedOption.id) {
-            fetch(`/api/user/${selectedOption.id}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    // console.log(data);
-                    if (data.data) {
-                        setFormData((prevData) => ({
-                            ...prevData,
-                            cmsid: selectedOption.value,
-                            name: data.data.crewname || '',
-                            design: data.data.designation || '',
-                            hq: data.data.hq || '',
-                            icTrainNo: data.data.ic_train_no || '',
-                            icTime: data.data.ic_time || prevData.icTime,
-                            bedSheets: data.data.bed_sheets || prevData.bedSheets,
-                            pillowCover: data.data.pillow_cover || prevData.pillowCover,
-                            blanket: data.data.blanket || prevData.blanket,
-                            allottedBed: data.data.allottedBed || prevData.allottedBed,
-                        }));
-                    }
-                })
-                .catch((err) => {
-                    console.error("Error fetching CMSID data:", err);
-                });
-        }
-    }, [selectedOption]);
+    
+            
+        
 
     // const formatDate = (date) => {
     //     if (!date) return '';
@@ -167,52 +172,50 @@ function Page() {
     // };
 
     return (
-        <>
-            <h1 className="form-name">Check In Form</h1>
+        <div className='hifi'>
+            <h1 className="checkin-form-name">Check In Form</h1>
             <div className="form-block">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className='check-form'>
                     <div className="right-block">
-                        <div>
-                            <label>CMS Id:</label>
-                            <select name="cmsid" value={formData.cmsid} onChange={handleChange}>
-                                {cmsidOptions.map((option) => (
-                                    <option key={`${option.id}-${option.value}`} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
+                        <div className="form-field">
+                            <label htmlFor="cmsid" className="label">CMS Id:</label>
+                            <input type="text" name="cmsid" value={formData.cmsid} onChange={handleChange} className="input-text" readOnly/>
                         </div>
 
-                        <div>
-                            <label>Name:</label>
-                            <input type="text" name="name" value={formData.name} onChange={handleChange} className='bead'/>
+                        <div className="form-field">
+                            <label htmlFor="name" className="label">Name:</label>
+                            <input type="text" name="name" value={formData.name} onChange={handleChange} className="input-text bead" readOnly/>
                         </div>
 
-                        <div>
-                            <label>Designation:</label>
-                            <input type="text" name="design" value={formData.design} onChange={handleChange} />
+                        <div className="form-field">
+                            <label htmlFor="design" className="label">Designation:</label>
+                            <input type="text" name="design" value={formData.design} onChange={handleChange} className="input-text" readOnly/>
                         </div>
 
-                        <div>
-                            <label>HeadQuarters:</label>
-                            <input type="text" name="hq" value={formData.hq} onChange={handleChange} />
+                        <div className="form-field">
+                            <label htmlFor="hq" className="label">HeadQuarters:</label>
+                            <input type="text" name="hq" value={formData.hq} onChange={handleChange} className="input-text" readOnly/>
                         </div>
                     </div>
 
                     <div className="left-block">
-                        <div>
-                            <label>Incoming Train No:</label>
-                            <input type="text" name="icTrainNo" value={formData.icTrainNo} onChange={handleChange} />
+                        <div className="form-field">
+                            <label htmlFor="vzm_arr_time" className="label">VZM. Arrival Time</label>
+                            <input type="datetime-local" name="arrTime" value={formData.arrTime} onChange={handleChange} className="input-datetime" required/>
+                        </div>
+                        <div className="form-field">
+                            <label htmlFor="icTrainNo" className="label">Incoming Train No:</label>
+                            <input type="text" name="icTrainNo" value={formData.icTrainNo} onChange={handleChange} className="input-text" required/>
                         </div>
 
-                        <div>
-                            <label>Incoming Time:</label>
-                            <input type="datetime-local" name="icTime" value={formData.icTime} onChange={handleChange} />
+                        <div className="form-field">
+                            <label htmlFor="icTime" className="label">RuningRoom Arrival Time:</label>
+                            <input type="datetime-local" name="icTime" value={formData.icTime} onChange={handleChange} className="input-datetime" required/>
                         </div>
 
-                        <div>
-                            <label>Allotted Bed:</label>
-                            <select name="allottedBed" value={formData.allottedBed} onChange={handleChange}>
+                        <div className="form-field">
+                            <label htmlFor="allottedBed" className="label">Allotted Bed:</label>
+                            <select name="allottedBed" value={formData.allottedBed} onChange={handleChange} className="input-select" required>
                                 {roomidOptions.map((option) => (
                                     <option key={`${option.id}-${option.value}`} value={option.value}>
                                         {option.label}
@@ -223,30 +226,40 @@ function Page() {
                     </div>
 
                     <div className='feedback-block'>
-                        <div>
-                            <label>Bed Sheets:</label>
-                            <input type="number" name="bedSheets" value={formData.bedSheets} onChange={handleChange} />
+                        <div className="form-field">
+                            <label htmlFor="bedSheets" className="label">Bed Sheets:</label>
+                            <input type="number" name="bedSheets" value={formData.bedSheets} onChange={handleChange} className="input-number" required/>
                         </div>
 
-                        <div>
-                            <label>Pillow Covers:</label>
-                            <input type="number" name="pillowCover" value={formData.pillowCover} onChange={handleChange} />
+                        <div className="form-field">
+                            <label htmlFor="pillowCover" className="label">Pillow Covers:</label>
+                            <input type="number" name="pillowCover" value={formData.pillowCover} onChange={handleChange} className="input-number" required/>
                         </div>
 
-                        <div>
-                            <label>Blankets:</label>
-                            <input type="number" name="blanket" value={formData.blanket} onChange={handleChange} />
+                        <div className="form-field">
+                            <label htmlFor="blanket" className="label">Blankets:</label>
+                            <input type="number" name="blanket" value={formData.blanket} onChange={handleChange} className="input-number" required/>
                         </div>
-
                     </div>
 
-                    <div className="button-div">
+                    {/* <div className="button-div" disabled={buttonDisabled}>
                         <button className="submitButton" type="submit">SUBMIT</button>
+                    </div> */}
+
+                    <div className="button-div">
+                        <button className="submitButton" type="submit">
+                        { buttonDisabled ? (
+                                            <Box sx={{ display: 'flex' }}>
+                                            <CircularProgress size="20px" sx={{ color: '#f2b157' }} />
+                                            </Box>
+                                ) : ("Submit")}
+                        </button>
                     </div>
                 </form>
             </div>
-        </>
+        </div>
+
     );
 }
 
-export default Page;
+export default CheckIn;

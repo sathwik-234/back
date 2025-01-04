@@ -1,7 +1,7 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import "./styles/home.css";
+import "./home.css";
 import { sendResetPasswordEmail, signinWithEmailPassword, signout, signupWithEmailPassword } from "@/utils/actions";
 import { Box, CircularProgress } from "@mui/material";
 
@@ -10,6 +10,13 @@ const PageCo = () => {
     const searchParams = useSearchParams();
     const nav = useRouter();
     const authType = searchParams.get("authtype") || "login";
+
+    useEffect(() => {
+        if(!localStorage.getItem("reloaded")){
+            window.location.reload();
+        }
+        localStorage.setItem("reloaded",true);
+    },[])
     
     const [formData, setFormData] = useState({
         cms_id: "",
@@ -33,6 +40,13 @@ const PageCo = () => {
         setPasswordError("");
         return true;
     };
+
+    useEffect(() => {
+            // Re-apply styles or trigger a reflow after page transition
+            document.body.style.display = 'none';
+            document.body.offsetHeight;  // Force reflow
+            document.body.style.display = '';
+          }, [nav.asPath]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -62,7 +76,7 @@ const PageCo = () => {
                     const { success,error } = await signinWithEmailPassword({ email: data.email, password: formData.password });
                     if (success) {
                         alert("Login successful!");
-                        nav.push("/ThankYou");
+                        nav.push("/home");
                     } else {
                         if(data.email){
                             alert("Wrong Password!!(U can reset password by clicking forgot password")
@@ -135,12 +149,13 @@ const PageCo = () => {
     
 
     return (
-        <div className="container">
-            <div>
+        <div className="mini-container">
+            <div className="container">
+            {/* <div>
                 <form action={signout}>
                     <button type="submit">Sign Out</button>
                 </form>
-            </div>
+            </div> */}
             <div className="left-section">
                 <div className="image-logo">
                     <img src="/home-1.png" alt="logo" />
@@ -280,6 +295,7 @@ const PageCo = () => {
 
                 
             </form>
+        </div>
         </div>
     );
 };

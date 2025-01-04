@@ -15,6 +15,7 @@ export const POST = async (req) => {
                 pillowcovers: formData.pillowCover,
                 blankets: formData.blanket,
                 allotted_bed: formData.allottedBed,
+                vzm_arrival_time:formData.arrTime
             },
         ]);
 

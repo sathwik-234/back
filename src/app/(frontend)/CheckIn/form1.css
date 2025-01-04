@@ -1,12 +1,9 @@
-body {
-  background-color: #E9EED9;
-  font-family: "Montserrat", sans-serif;
-}
-
 .form-block {
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   flex-direction: row;
   box-shadow: 0 8px 10px rgba(84, 71, 63, 0.2);
   background-color: #ccd0be;
@@ -15,31 +12,33 @@ body {
   margin-left: 200px;
 }
 
-form {
+.check-form {
   display: flex;
   width: 90%;
   padding: 10px;
   flex-wrap: wrap;
 }
 
-.form-name {
+.checkin-form-name {
   font-size: 2.0rem;
-  font-weight: 200px;
+  font-weight:bold;
   text-align: center;
-  color: #000000;
+  color: #54473F;
   padding: 5px 10px;
-  background-color: #d2f13a;
   display: inline-block;
   position: relative;
-  stroke: #000000;
+  text-decoration: underline;
+  text-decoration-color: #54473F; /* Optional: Matches the text color */
+  text-decoration-thickness: 2px; /* Adjust thickness */
 }
+
 
 .right-block, .left-block, .feedback-block {
   flex: 1;
   margin-right: 150px;
 }
 
-.right-block div, .left-block div, .feedback-block div {
+.form-field {
   margin-bottom: 15px;
 }
 
@@ -48,16 +47,17 @@ form {
   margin-right: 20px;
 }
 
-label {
+.label {
   display: block;
+  width: 120%;
   font-weight: bold;
   margin-bottom: 5px;
 }
 
-input[type="text"],
-input[type="number"],
-input[type="datetime-local"],
-select {
+.input-text,
+.input-number,
+.input-datetime,
+.input-select {
   width: 120%;
   padding: 8px;
   border: 1px solid #ccc;
@@ -66,6 +66,17 @@ select {
   box-sizing: border-box;
 }
 
+.input-text:focus,
+.input-number:focus,
+.input-datetime:focus,
+.input-select:focus {
+  outline: none;
+  border-color: #f2b157;
+  box-shadow: 0 0 2px #f2b157;
+    transition: box-shadow 0.3s ease-in-out
+}
+
+
 .bead{
   font-size: 10px;
 }
@@ -73,8 +84,7 @@ select {
 .button-div {
   display: flex;
   justify-content: center;
-  /* width: 100%;
-  margin-top: 20px; */
+  align-items: center;
 }
 
 .submitButton {
@@ -86,7 +96,7 @@ select {
   background-color: #54473F;
   color: #E9EED9;
   border: none;
-  border-radius: 4px;
+  border-radius: 20px;
   font-size: 20px;
   font-weight: bold;
   font-family: "Montserrat", sans-serif;
@@ -95,57 +105,53 @@ select {
 }
 
 .submitButton:hover {
-  background-color: #8f7669;
+  background-color: #f0910c;
   color: #54473F;
 }
 
 /* Mobile View Adjustments */
 @media (max-width: 768px) {
-  /* Adjust the form layout to column for mobile */
   .form-block {
     flex-direction: column;
-    margin-right: 20px; /* Reduce margin for better spacing */
-    margin-left: 20px; /* Reduce margin for better spacing */
+    margin-right: 20px;
+    margin-left: 20px;
   }
 
-  form {
-    flex-direction: column; /* Stack form inputs vertically */
-    width: 100%; /* Full width */
-    padding: 10px; /* Adjust padding for mobile */
+  .check-form {
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
   }
 
   .form-name {
-    font-size: 1.5rem; /* Smaller font size for mobile */
+    font-size: 1.5rem;
     padding: 5px 10px;
   }
 
   .right-block, .left-block, .feedback-block {
-    flex: 1 1 100%; /* Allow blocks to take full width */
-    margin-right: 0; /* Remove margin for mobile */
-    margin-bottom: 20px; /* Space between blocks */
+    flex: 1 1 100%;
+    margin-right: 0;
+    margin-bottom: 20px;
   }
 
-  input[type="text"],
-  input[type="number"],
-  input[type="datetime-local"],
-  select {
-    width: 90%; /* Make inputs take full width */
-    padding: 12px; /* Increase padding for better touch targets */
-    font-size: 1rem; 
-    /* margin-left: 5px; */
-    /* Adjust font size for readability */
+  .input-text,
+  .input-number,
+  .input-datetime,
+  .input-select {
+    width: 90%;
+    padding: 12px;
+    font-size: 1rem;
   }
 
   .submitButton {
-    width: 90%; /* Make submit button full-width */
+    width: 90%;
     padding: 15px;
     margin-right: 30px;
     font-size: 1.2rem;
-    /* margin-left: px; Adjust font size for mobile */
-    align-self: center; /* Center the submit button */
+    align-self: center;
   }
 
   .button-div {
-    width: 100%; /* Make button div take full width */
+    width: 100%;
   }
 }

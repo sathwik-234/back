@@ -1,8 +1,8 @@
 "use client"
 import React, { useEffect, useState,useMemo } from 'react'
-import './form3.css'
+import "./form3.css"
 import { useRouter } from 'next/navigation'
-
+import { CircularProgress, Box } from '@mui/material';
 
 
 function page() {
@@ -20,11 +20,37 @@ function page() {
         }
     )
 
-    const [refreshKey, setRefreshKey] = useState(0);
+    const [user, setUser] = useState(null);
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
 
-    const [cmsidOptions, setCmsidOptions] = useState([
-            { value: '', label: '', id: '' },
-        ]);
+    const [refreshKey, setRefreshKey] = useState(0);
+    
+    useEffect(() => {
+            fetch("/api/auth")
+                .then((res) => res.json())
+                .then((data) => {
+                    setUser(data.user);
+                })
+                .catch(() => {
+                    setError(true);
+                    setLoading(false);
+                });
+                fetch("/api/rooms")
+                .then((response) => response.json())
+                .then((data) => {
+                    const options = data.data.map((item) => ({
+                        id: item.id,
+                        value: item.room_no,
+                        label: item.room_no,
+                    }));
+                    setRoomidOptions([{ value: '', label: 'Select Room', id: '' }, ...options]);
+                })
+                .catch((err) => {
+                    console.error("Error fetching Room options:", err);
+                });
+        }, [refreshKey]);
     
 
 
@@ -35,60 +61,33 @@ function page() {
     };
 
     useEffect(() => {
-            fetch("/api/user")
-                .then((response) => response.json())
+            if (user) {
+              fetch(`/api/getCrewDetails/${user.email}`)
+                .then((res) => res.json())
                 .then((data) => {
-                    const options = data.data.map((item) => ({
-                        id: item.id,
-                        value: item.cms_id,
-                        label: item.cms_id,
-                    }));
-                    setCmsidOptions([{ value: '', label: 'Select Cmsid', id: '' }, ...options]);
+                    console.log(data);
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    cmsid: data.data.cms_id || '',
+                    name: data.data.crewname || '',
+                    design: data.data.designation || '',
+                    hq: data.data.hq || '',
+                  }));
+                  setLoading(false);
                 })
-                .catch((err) => {
-                    console.error("Error fetching CMSID options:", err);
+                .catch(() => {
+                  setError(true);
+                  setLoading(false);
                 });
-        }
-    ,[refreshKey])
-
-    const selectedOption = useMemo(
-            () => cmsidOptions.find((option) => option.value === formData.cmsid),
-            [formData.cmsid, cmsidOptions]
-        );
-
-
-    useEffect(() => {
-            if (selectedOption && selectedOption.id) {
-                fetch(`/api/user/${selectedOption.id}`)
-                    .then((response) => response.json())
-                    .then((data) => {
-                        // console.log(data);
-                        if (data.data) {
-                            setFormData((prevData) => ({
-                                ...prevData,
-                                cmsid: selectedOption.value,
-                                name: data.data.crewname || '',
-                                design: data.data.designation || '',
-                                hq: data.data.hq || '',
-                                icTrainNo: data.data.ic_train_no || '',
-                                icTime: data.data.ic_time || prevData.icTime,
-                                bedSheets: data.data.bed_sheets || prevData.bedSheets,
-                                pillowCover: data.data.pillow_cover || prevData.pillowCover,
-                                blanket: data.data.blanket || prevData.blanket,
-                                allottedBed: data.data.allottedBed || prevData.allottedBed,
-                            }));
-                        }
-                    })
-                    .catch((err) => {
-                        console.error("Error fetching CMSID data:", err);
-                    });
             }
-        }, [selectedOption]);
+          }, [user]);
+
 
 
 
         const handleSubmit = async (e) => {
             e.preventDefault();
+            setButtonDisabled(true);
             try {
                 const response = await fetch('/api/complaint', {
                     method: 'POST',
@@ -121,60 +120,79 @@ function page() {
                     complaintType : '',
                     description : ''
                 });
+                setButtonDisabled(false);
                 nav.push("/home")
             }
         };
+
+        if (loading) return (
+            <div className="home-loading">
+              <Box sx={{ display: 'flex' }}>
+                <CircularProgress size="50px" sx={{ color: '#54473F' }} />
+              </Box>
+            </div>
+          );
+        
+          if (error) return <div className="error">An error occurred. Please try again later.</div>;
+    
+        
 
 
 
   return (
     <>
-        <h1 className="form-name">Complaint Form</h1>
-            <div className="form-block">
-                <form onSubmit={handleSubmit}>
-                    <div className="right-block">
-                        <div>
-                            <label>CMS Id:</label>
-                            <input type='text' name='cmsid' value={formData.cmsid} onChange={handleChange}></input>
+        <h1 className="form-title">Complaint Form</h1>
+            <div className="form-container">
+                <form className="form-element" onSubmit={handleSubmit}>
+                    <div className="form-column-right">
+                        <div className="input-group">
+                            <label className='help-form-label'>CMS Id:</label>
+                            <input type="text" name="cmsid" value={formData.cmsid} onChange={handleChange} className='help-form-input' />
                         </div>
 
-                        <div>
-                            <label>Name:</label>
-                            <input type="text" name="name" value={formData.name} onChange={handleChange} />
+                        <div className="input-group">
+                            <label className='help-form-label'>Name:</label>
+                            <input type="text" name="name" value={formData.name} onChange={handleChange} className='help-form-input' />
                         </div>
 
-                        <div>
-                            <label>Designation:</label>
-                            <input type="text" name="design" value={formData.design} onChange={handleChange} />
+                        <div className="input-group">
+                            <label className='help-form-label'>Designation:</label>
+                            <input type="text" name="design" value={formData.design} onChange={handleChange} className='help-form-input' />
                         </div>
 
-                        <div>
-                            <label>HeadQuarters:</label>
-                            <input type="text" name="hq" value={formData.hq} onChange={handleChange} />
-                        </div>
-
-                        <div>
-                            <label>Room No.:</label>
-                            <input type='text' name='roomno' value={formData.roomno} onChange={handleChange}/>
+                        <div className="input-group">
+                            <label className='help-form-label'>HeadQuarters:</label>
+                            <input type="text" name="hq" value={formData.hq} onChange={handleChange} className='help-form-input' />
                         </div>
                     </div>
 
-                    <div className="left-block">
-                        <div>
-                            <label>Nature Of Complaint:</label>
-                            <input type="text" name="complaintType" value={formData.complaintType} onChange={handleChange} className='special'/>
+                    <div className="form-column-left">
+                    <div className="input-group">
+                            <label className='help-form-label'>Room No.:</label>
+                            <input type="text" name="roomno" value={formData.roomno} onChange={handleChange} className='help-form-room' required/>
                         </div>
-                        <div>
-                            <label>Description</label>
-                                    <textarea name="description" value={formData.description} onChange={handleChange} maxLength={200} placeholder="Up to 200 words" className="resizable-textarea"/>
+                        <div className="input-group">
+                            <label className='help-form-label'>Nature Of Complaint:</label>
+                            <input type="text" name="complaintType" value={formData.complaintType} onChange={handleChange} className="special-input" required/>
+                        </div>
+                        <div className="input-group">
+                            <label className='help-form-label'>Description:</label>
+                            <textarea name="description" value={formData.description} onChange={handleChange} maxLength={200} placeholder="Up to 200 words" className="textarea-resizable" />
                         </div>
                     </div>
 
-                    <div className="button-div">
-                        <button className="submitButton" type="submit">SUBMIT</button>
+                    <div className="form-button-container">
+                        <button className="submit-button" type="submit">
+                                                { buttonDisabled ? (
+                                                                    <Box sx={{ display: 'flex' }}>
+                                                                    <CircularProgress size="20px" sx={{ color: '#f2b157' }} />
+                                                                    </Box>
+                                                        ) : ("Submit")}
+                                                </button>
                     </div>
                 </form>
             </div>
+
         </>
   )
 }

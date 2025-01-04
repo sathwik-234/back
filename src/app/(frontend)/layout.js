@@ -1,8 +1,12 @@
 "use client"
 
 import localFont from "next/font/local";
-import "@/app/styles/layout.css"
+// import "@/app/styles/layout.css"
+import "./layout.css"
 import { useRouter } from "next/navigation";
+import { IoHomeOutline } from "react-icons/io5";
+import { PiHandshakeDuotone } from "react-icons/pi";
+import { SlEnvolopeLetter } from "react-icons/sl";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -41,7 +45,9 @@ export default function RootLayout({ children }) {
             <h1 className="app-name">R.R Governance</h1>
         </div>
         <div className="right-nav">
-            <button className="nav-buttons" onClick={navigateHome}>Home</button>
+            <button className="nav-buttons" onClick={navigateHome}>
+              <div className="emoji"><IoHomeOutline /> </div>
+              Home</button>
             
             {/* <div className="dropdown">
                 <button className="nav-buttons dropdown-button">
@@ -70,11 +76,15 @@ export default function RootLayout({ children }) {
             </div> */}
 
             <div className="nav-buttons">
-                <a href="/Help">Help & Support</a>
+                <a href="/Help">
+                <div><PiHandshakeDuotone /></div>
+                Help & Support</a>
             </div>
             
             <div className="nav-buttons" >
-                <a href="/AboutUs">About Us</a>
+                <a href="/AboutUs">
+                <div><SlEnvolopeLetter/></div>
+                About Us</a>
             </div>
         </div>
     </div>
