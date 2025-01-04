@@ -133,7 +133,7 @@ function CheckOut() {
   .then((response) => response.json())
   .then((data) => {
     console.log(data);
-      if(data.data.status === "FALSE"){
+      if(!data.data.status){
           alert("Room is already checked out.");
           setVerified(false);
       }else{
