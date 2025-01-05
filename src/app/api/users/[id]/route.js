@@ -1,10 +1,9 @@
 import { supabase } from "@/app/supabaseSetup";
 import { NextResponse } from "next/server";
 
-export async function GET(request, context) {
+export async function GET(request, {params}) {
     try {
-        const { params } = context; 
-        const id = params?.id; 
+        const {id} = await params;
 
         if (!id) {
             return NextResponse.json({ error: "ID is required" }, { status: 400 });

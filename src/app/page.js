@@ -82,6 +82,11 @@ const PageCo = () => {
                             alert("Wrong Password!!(U can reset password by clicking forgot password")
                         }else{
                             alert("User not authenticated")
+                            document.getElementById("password").value = "";
+                            setFormData((prevdata) => ({
+                                ...prevdata,
+                                password: ""
+                            }));   
                             nav.push("/?authtype=signin")
                         }
                     }
@@ -99,12 +104,13 @@ const PageCo = () => {
                         nav.push("/?authtype=login");
                     }
                     else{
-                        if(data.email){
-                            alert("There is an Error Occured,Wait for 2 min, then make a submit again")
-                        }else{
-                            alert("User not authenticated");
-                            nav.push("/?authtype=signin")
-                        }
+                        if (data.email) {
+                            console.error("Temporary server issue detected.");
+                            alert("There was an error. Please wait for 2 minutes and try submitting again.");
+                        } else {
+                            alert("User not authenticated. Redirecting to sign-in page.");
+                            nav.push("/?authtype=signin");
+                        }                        
                     }
                 } else {
                     alert("CMS ID not found.");
