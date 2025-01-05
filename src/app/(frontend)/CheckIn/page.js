@@ -76,34 +76,43 @@ function CheckIn() {
 
 
       useEffect(() => {
-    
         const fetchData = async () => {
             try {
                 const response = await fetch(`api/CheckInSubmit/${formData.cmsid}`);
                 if (!response.ok) throw new Error(`Error fetching cms data: ${response.statusText}`);
-                
+    
                 const check_in_data = await response.json();
+                
+                if (!check_in_data.data || check_in_data.data.length === 0) {
+                    // If no check-in data, treat the user as new
+                    console.log("New User (No check-in data)");
+                    setVerified(true);
+                    return;
+                }
+    
                 const res = await fetch(`api/rooms/${check_in_data.data[0].allotted_bed}`);
                 if (!res.ok) throw new Error(`Error fetching room data: ${res.statusText}`);
-                
+    
                 const roomData = await res.json();
-                    if (roomData.data[0].allotted_to === formData.cmsid) {
-                        console.log("Already checkedIn");
-                        setVerified(false);
-                        alert("Already checked in")
-                        signout();
-                        nav.push("/")
-                    } else {
-                        console.log("New User");
-                        setVerified(true);
-                    }
-                console.log(verified)
+                if (roomData.data[0].allotted_to === formData.cmsid) {
+                    console.log("Already checked in");
+                    setVerified(false);
+                    alert("Already checked in");
+                    signout();
+                    nav.push("/");
+                } else if (roomData.data[0].allotted_bed !== formData.cmsid) {
+                    console.log("New User");
+                    setVerified(true);
+                } else {
+                    setVerified(true);
+                }
+                console.log(verified);
             } catch (error) {
                 if (isMounted) console.error(error.message);
             }
         };
     
-        if (formData.cmsid) fetchData(); 
+        if (formData.cmsid) fetchData();
     }, [formData.cmsid]);
     
     
