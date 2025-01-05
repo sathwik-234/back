@@ -129,26 +129,42 @@ function CheckOut() {
   }, [formData.cmsid]);
 
   useEffect(() => {
-  fetch(`/api/rooms/${formData.allottedBed}`)
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data);
-      if(!data.data.status){
-          alert("Room is already checked out.");
+    const fetchRoomData = async () => {
+      if (!formData.allottedBed) return; 
+  
+      try {
+        const response = await fetch(`/api/rooms/${formData.allottedBed}`);
+        if (!response.ok) {
+          throw new Error(`Error fetching room data: ${response.statusText}`);
+        }
+        const data = await response.json();
+        console.log(data.data[0])
+        if (data.data[0].status === false) {
+          console.log("Room is not verified");
           setVerified(false);
-      }else{
+        } else if (data.data[0].status === true) {
+          console.log("Room is verified");
           setVerified(true);
+        } else {
+          throw new Error("Invalid room data format received.");
+        }
+      } catch (err) {
+        console.error(err.message);
+        setError(err.message);
       }
-  })
-  .catch((err) => {
-      setError(err.message);
-  })},[formData.allottedBed]);
+    };
+  
+    fetchRoomData();
+  }, [formData.allottedBed]);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setButtonDisabled(true);
     try {
+        console.log(3)
         if(verified){
+          console.log(4)
             const response = await fetch("/api/CheckOutSubmit", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
