@@ -117,7 +117,7 @@ const Page = () => {
           </div>
           <div className="signature-footer">
             <p>
-              - done by{" "}
+              - Designed & Developed by{" "}
               <span className="author">G.Pradeep Kumar & G.Sai Sathwik</span>
             </p>
           </div>
