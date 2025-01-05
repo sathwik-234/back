@@ -207,21 +207,18 @@ const PageCo = () => {
 
                 {authType !== "reset-password" && (
                     <div className="form-group">
-                        <label htmlFor="password"> <TbLockPassword /> Password: </label>
-                        <input
-                            type="tel"  // Use 'tel' for numeric keyboard on mobile
-                            className="form-control"
-                            id="password"
-                            placeholder="Enter your 6-digit (number)"
-                            onChange={handleChange}
-                            onInput={(e) => e.target.value = e.target.value.replace(/\D/g, '')} // Restrict non-numeric characters
-                            maxLength="6" // Restrict to 6 digits
-                            required
-                        />
-                        {passwordError && <span className="error-message">{passwordError}</span>}
-                    </div>                
+                    <label htmlFor="password"> <TbLockPassword></TbLockPassword> Password: </label>
+                    <input
+                        type="password"
+                        className="form-control"
+                        id="password"
+                        placeholder="Enter your 6-digit (number)"
+                        onChange={handleChange}
+                        required
+                    />
+                    {passwordError && <span className="error-message">{passwordError}</span>}
+                </div>                
                 )}
-
 
                 {authType === "signin" && (
                     <>
