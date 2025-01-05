@@ -115,7 +115,7 @@ body {
 @media (max-width: 768px) {
 
   body {
-    overflow: hidden;
+    overflow: auto;
     font-size: 1.1rem; /* Increase base font size for readability */
   }
 
