@@ -35,6 +35,7 @@ function CheckIn() {
     const [error,setError] = useState(null);
     const [loading,setLoading] = useState(true);
     const [buttonDisabled, setButtonDisabled] = useState(false);
+    const [verified,setVerified] = useState(false)
 
     const [refreshKey, setRefreshKey] = useState(0);
 
@@ -73,41 +74,83 @@ function CheckIn() {
         }
       }, [user]);
 
+
+      useEffect(() => {
+    
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`api/CheckInSubmit/${formData.cmsid}`);
+                if (!response.ok) throw new Error(`Error fetching cms data: ${response.statusText}`);
+                
+                const check_in_data = await response.json();
+                const res = await fetch(`api/rooms/${check_in_data.data[0].allotted_bed}`);
+                if (!res.ok) throw new Error(`Error fetching room data: ${res.statusText}`);
+                
+                const roomData = await res.json();
+                    if (roomData.data[0].allotted_to === formData.cmsid) {
+                        console.log("Already checkedIn");
+                        setVerified(false);
+                        alert("Already checked in")
+                        signout();
+                        nav.push("/")
+                    } else {
+                        console.log("New User");
+                        setVerified(true);
+                    }
+                console.log(verified)
+            } catch (error) {
+                if (isMounted) console.error(error.message);
+            }
+        };
+    
+        if (formData.cmsid) fetchData(); 
+    }, [formData.cmsid]);
+    
+    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setButtonDisabled(true);
+        console.log(verified)
         try {
-            const response = await fetch('/api/CheckInSubmit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-
-            const resp = await fetch(`/api/rooms/${formData.allottedBed}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ status: 'TRUE',allotted_to : formData.cmsid }),
-            });
-
-            const result1 = await response.json();
-            const result2 = await resp.json();
-
-            if (response.ok && resp.ok) {
-                console.log('Form submitted successfully:', result1);
-                alert('Form submitted successfully!');
-                setRefreshKey((prev)=>prev+1);
-            } else {
-                console.error('Error submitting form:', response.ok ? result2 : result1);
-                alert(`Error: ${(response.ok ? result2.error.message : result1.error.message) || 'Unexpected error'}`);
+            if (verified) {
+                // First request to submit the form data
+                const response = await fetch('/api/CheckInSubmit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
+    
+                // Second request to update room status
+                const resp = await fetch(`/api/rooms/${formData.allottedBed}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ status: 'TRUE', allotted_to: formData.cmsid }),
+                });
+    
+                // Awaiting both responses
+                const result1 = await response.json();
+                const result2 = await resp.json();
+    
+                if (response.ok && resp.ok) {
+                    console.log('Form submitted successfully:', result1);
+                    alert('Form submitted successfully!');
+                    setRefreshKey((prev) => prev + 1);
+                } else {
+                    const errorMessage = response.ok ? result2.error.message : result1.error.message;
+                    console.error('Error submitting form:', errorMessage);
+                    alert(`Error: ${errorMessage || 'Unexpected error'}`);
+                }
             }
         } catch (err) {
             console.error('Error during form submission:', err);
             alert('An unexpected error occurred.');
         } finally {
+            // Reset form data and re-enable button
             setFormData({
                 cmsid: '',
                 name: '',
@@ -121,22 +164,29 @@ function CheckIn() {
                 allottedBed: '',
             });
             setButtonDisabled(false);
-            signout()
-            nav.push("/")
+    
+            // Signout and redirect
+            signout();
+            nav.push('/');
         }
     };
+    
 
     useEffect(() => {
+        setLoading(true);  // Set loading state before making fetch request
+        
         fetch("/api/auth")
             .then((res) => res.json())
             .then((data) => {
                 setUser(data.user);
+                setLoading(false);  // Set loading to false once data is received
             })
             .catch(() => {
                 setError(true);
                 setLoading(false);
             });
-            fetch("/api/rooms")
+        
+        fetch("/api/rooms")
             .then((response) => response.json())
             .then((data) => {
                 const options = data.data.map((item) => ({
@@ -145,14 +195,17 @@ function CheckIn() {
                     label: item.room_no,
                 }));
                 setRoomidOptions([{ value: '', label: 'Select Room', id: '' }, ...options]);
+                setLoading(false);  // Set loading to false once room data is fetched
             })
             .catch((err) => {
                 console.error("Error fetching Room options:", err);
+                setLoading(false);  // Make sure to set loading to false if fetch fails
             });
     }, [refreshKey]);
+    
 
     if (loading) return (
-        <div className="home-loading">
+        <div className="checkin-loading">
           <Box sx={{ display: 'flex' }}>
             <CircularProgress size="50px" sx={{ color: '#54473F' }} />
           </Box>

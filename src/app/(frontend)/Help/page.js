@@ -126,7 +126,7 @@ function page() {
         };
 
         if (loading) return (
-            <div className="home-loading">
+            <div className="about-us-loading">
               <Box sx={{ display: 'flex' }}>
                 <CircularProgress size="50px" sx={{ color: '#54473F' }} />
               </Box>
@@ -172,9 +172,25 @@ function page() {
                             <input type="text" name="roomno" value={formData.roomno} onChange={handleChange} className='help-form-room' required/>
                         </div>
                         <div className="input-group">
-                            <label className='help-form-label'>Nature Of Complaint:</label>
-                            <input type="text" name="complaintType" value={formData.complaintType} onChange={handleChange} className="special-input" required/>
-                        </div>
+    <label className='help-form-label'>Nature Of Complaint:</label>
+    <select 
+        name="complaintType" 
+        value={formData.complaintType} 
+        onChange={handleChange} 
+        className="special-input" 
+        required
+    >
+        <option value="" disabled>Select a complaint type</option>
+        <option value="room not cleaned">Room Not Cleaned</option>
+        <option value="stale food served">Stale Food Served</option>
+        <option value="poor food quality in parcel">Poor Food quality in parcel</option>
+        <option value="uncomfortable in bedding">Uncomfortable in Bedding</option>
+        <option value="unclean toilets">Unclean Toilets</option>
+        <option value="no proper hospitality">No Proper Hospitality</option>
+        <option value="others">Others</option>
+    </select>
+</div>
+
                         <div className="input-group">
                             <label className='help-form-label'>Description:</label>
                             <textarea name="description" value={formData.description} onChange={handleChange} maxLength={200} placeholder="Up to 200 words" className="textarea-resizable" />

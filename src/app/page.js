@@ -4,6 +4,13 @@ import { useSearchParams, useRouter } from "next/navigation";
 import "./home.css";
 import { sendResetPasswordEmail, signinWithEmailPassword, signout, signupWithEmailPassword } from "@/utils/actions";
 import { Box, CircularProgress } from "@mui/material";
+import { TbLockPassword } from "react-icons/tb";
+import { FiUser } from "react-icons/fi";
+import { MdOutlineAlternateEmail } from "react-icons/md";
+import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
+import { LuUsers } from "react-icons/lu";
+import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
+
 
 
 const PageCo = () => {
@@ -63,7 +70,7 @@ const PageCo = () => {
 
                 if (response.ok) {
                     await signupWithEmailPassword({ email: formData.email, password: formData.password });
-                    alert("Sign-up successful! Check your email for verification.");
+                    alert("Sign-up successful! Please check your provided email for verification.|| साइन-अप सफल हुआ! कृपया सत्यापन के लिए अपने ईमेल की जांच करें। ");
                     nav.push("/?authtype=login");
                 } else {
                     const errorData = await response.json();
@@ -75,13 +82,18 @@ const PageCo = () => {
                     const { data } = await response.json();
                     const { success,error } = await signinWithEmailPassword({ email: data.email, password: formData.password });
                     if (success) {
-                        alert("Login successful!");
+                        alert("Logged in successfully! || सफलतापूर्वक लॉगिन हो गया!");
                         nav.push("/home");
                     } else {
                         if(data.email){
-                            alert("Wrong Password!!(U can reset password by clicking forgot password")
+                            alert("Wrong Password!!(U can reset password by clicking forgot password || गलत पासवर्ड!! (आप 'पासवर्ड भूल गए' पर क्लिक करके पासवर्ड रीसेट कर सकते हैं।)")
+                            document.getElementById("password").value = "";
+                            setFormData((prevdata) => ({
+                                ...prevdata,
+                                password: ""
+                            }));   
                         }else{
-                            alert("User not authenticated")
+                            alert("You are not yet registered/authenticated in our website || आप अभी तक हमारी वेबसाइट पर पंजीकृत/प्रमाणित नहीं हैं।")
                             document.getElementById("password").value = "";
                             setFormData((prevdata) => ({
                                 ...prevdata,
@@ -91,7 +103,7 @@ const PageCo = () => {
                         }
                     }
                 } else {
-                    alert("CMS ID not found.");
+                    alert("CMS ID not found. || CMS ID उपलब्ध नहीं है।");
                     nav.push("/?authtype=signup")
                 }
             } else if (authType === "reset-password") {
@@ -100,20 +112,20 @@ const PageCo = () => {
                     const { data } = await response.json();
                     const { success } = await sendResetPasswordEmail({ email: data.email });
                     if (success) {
-                        alert("Password reset email sent!");
+                        alert("You received a reset-password email link. Please click on the link in the email. || आपको एक पासवर्ड रीसेट ईमेल लिंक प्राप्त हुआ है। कृपया ईमेल में दिए गए लिंक पर क्लिक करें।");
                         nav.push("/?authtype=login");
                     }
                     else{
                         if (data.email) {
                             console.error("Temporary server issue detected.");
-                            alert("There was an error. Please wait for 2 minutes and try submitting again.");
+                            alert("There was an error. Please wait for 2 minutes and try submitting again. || एक त्रुटि हुई है। कृपया 2 मिनट प्रतीक्षा करें और फिर से सबमिट करने का प्रयास करें।");
                         } else {
-                            alert("User not authenticated. Redirecting to sign-in page.");
+                            alert("User is not registered in our app, Redirecting to sign-in page. || उपयोगकर्ता हमारे app में पंजीकृत नहीं है, साइन-इन पृष्ठ पर पुनः निर्देशित किया जा रहा है।");
                             nav.push("/?authtype=signin");
                         }                        
                     }
                 } else {
-                    alert("CMS ID not found.");
+                    alert("CMS ID not found. || CMS ID उपलब्ध नहीं है।");
                     nav.push("/?authtype=signup")
                 }
             }else if(authType === "signin"){
@@ -125,19 +137,19 @@ const PageCo = () => {
                 if(response.ok){
                     const {error,success} = await signupWithEmailPassword({email : formData.email,password:formData.password});
                     if(success){
-                        alert("Check your mail for verification before login")
+                        alert("Sign-in successful! Please check your provided email for verification.|| साइन-ईन सफल हुआ! कृपया सत्यापन के लिए अपने ईमेल की जांच करें।")
                         nav.push("/?authtype=login");
                     }else{
-                        alert("An error occures")
+                        alert("An error occurred")
                     }
                 }else{
-                    alert("CMS ID is not found")
+                    alert("CMS ID is not found || || CMS ID उपलब्ध नहीं है।")
                     nav.push("/?authtype=signup")
                 }
             }
         } catch (error) {
             console.error("Error during submission:", error);
-            alert("Something went wrong. Please try again later.");
+            alert("Something went wrong. Please try again later. || कुछ गलत हो गया है। कृपया बाद में फिर से प्रयास करें।");
         }finally{
             setFetching(false)
         }
@@ -182,7 +194,7 @@ const PageCo = () => {
 
             <form className="right-section" onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="cms_id">CMS ID:</label>
+                    <label htmlFor="cms_id"><FiUser/>CMS ID:</label>
                     <input
                         type="text"
                         className="form-control"
@@ -195,23 +207,23 @@ const PageCo = () => {
 
                 {authType !== "reset-password" && (
                     <div className="form-group">
-                        <label htmlFor="password">Password:</label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            id="password"
-                            placeholder="Enter your 6 digit Password"
-                            onChange={handleChange}
-                            required
-                        />
-                        {passwordError && <span className="error-message">{passwordError}</span>}
-                    </div>
+                    <label htmlFor="password"> <TbLockPassword></TbLockPassword> Password: </label>
+                    <input
+                        type="password"
+                        className="form-control"
+                        id="password"
+                        placeholder="Enter your 6-digit (number)"
+                        onChange={handleChange}
+                        required
+                    />
+                    {passwordError && <span className="error-message">{passwordError}</span>}
+                </div>                
                 )}
 
                 {authType === "signin" && (
                     <>
                         <div className="form-group">
-                            <label htmlFor="email">Email:</label>
+                            <label htmlFor="email"><MdOutlineAlternateEmail/>Email:</label>
                             <input
                                 type="email"
                                 className="form-control"
@@ -228,7 +240,7 @@ const PageCo = () => {
                 {authType === "signup" && (
                     <>
                         <div className="form-group">
-                            <label htmlFor="email">Email:</label>
+                            <label htmlFor="email"><MdOutlineAlternateEmail/>Email:</label>
                             <input
                                 type="email"
                                 className="form-control"
@@ -239,7 +251,7 @@ const PageCo = () => {
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="crewname">Crew Name:</label>
+                            <label htmlFor="crewname"><MdOutlineDriveFileRenameOutline/>Crew Name:</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -250,25 +262,27 @@ const PageCo = () => {
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="designation">Designation:</label>
+                            <label htmlFor="designation"><LuUsers/>Designation:</label>
                             <select className="form-control" id="designation" onChange={handleChange} required>
                                 <option value="">Select your Designation</option>
                                 <option value="LPM">LPM</option>
                                 <option value="LPP">LPP</option>
                                 <option value="LPG">LPG</option>
-                                <option value="ALP">ALP</option>
                                 <option value="SALP">SALP</option>
+                                <option value="ALP">ALP</option>
+                                <option value="CLI">CLI</option>
                             </select>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="hq">Headquarters:</label>
+                            <label htmlFor="hq"><HiOutlineBuildingOffice2/>Headquarters:</label>
                             <select className="form-control" id="hq" onChange={handleChange} required>
                                 <option value="">Select your Division</option>
                                 <option value="VSKP">VSKP</option>
-                                <option value="KUR">KUR</option>
+                                <option value="GPL">GPL</option>
                                 <option value="SCMN">SCMN</option>
                                 <option value="MIPM">MIPM</option>
                                 <option value="RGDA">RGDA</option>
+                                <option value="KUR">KUR</option>
                                 <option value="SBP">SBP</option>
                                 <option value="TIG">TIG</option>
                                 <option value="OTH">Others</option>
@@ -280,7 +294,7 @@ const PageCo = () => {
                 <div className="links-container">
                     {authType !== "signup" && <a href="/?authtype=signup">New User? (Click to Register here)</a>}
                     {authType !== "login" && <a href="/?authtype=login">Back to Login</a>}
-                    {authType !== "reset-password" && <a href="/?authtype=reset-password">Forgot Password?(CLick here)</a>}
+                    {authType !== "reset-password" && <a href="/?authtype=reset-password">Forgot Password?(Click here)</a>}
                 </div>
 
                 <button
@@ -297,6 +311,19 @@ const PageCo = () => {
                     )}
                 </button>
 
+                {
+                    authType === "login" ?(
+                        <div className="special-message">
+                        <strong>Note:</strong> For the first time Aunthentication, use "123456" as password.
+                        Don't forget to change the password later for the security of your account.
+                        <br></br>
+                        <span className="hindi">
+                        <strong>नोट: </strong>पहली बार प्रमाणीकरण के लिए, "123456" को पासवर्ड के रूप में उपयोग करें।
+                        बाद में अपने खाते की सुरक्षा के लिए पासवर्ड बदलना न भूलें।
+                        </span>
+                    </div>
+                    ) : ("")
+                }
 
 
                 

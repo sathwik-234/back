@@ -50,7 +50,8 @@ body {
   margin-bottom: 15px;
 }
 
-.home-loading {
+
+.about-us-loading {
   position: fixed; /* Fixes the position on the page */
   top: 50%; /* Centers vertically */
   left: 50%; /* Centers horizontally */
@@ -135,7 +136,13 @@ body {
   box-shadow: 0 0 5px #f2b157;
   transition: box-shadow 0.3s ease-in-out;
 }
+
+.special-input{
+  font-family: "Montserrat",sans-serif;
+}
+
 .special-input:focus {
+  font-family: "Montserrat",sans-serif;
   outline: none;
   border-color: #f2b157;
   box-shadow: 0 0 5px #f2b157;
@@ -158,6 +165,11 @@ body {
 
 /* Mobile View Adjustments */
 @media (max-width: 768px) {
+
+  body{
+    overflow: hidden;
+  }
+
   .form-container {
     flex-direction: column;
     margin-left: 20px;  /* Reduce margin for better spacing */

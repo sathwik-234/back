@@ -12,6 +12,7 @@
   margin-left: 200px;
 }
 
+
 .check-form {
   display: flex;
   width: 90%;
@@ -87,6 +88,15 @@
   align-items: center;
 }
 
+
+.checkin-loading{
+  position: fixed; /* Fixes the position on the page */
+  top: 50%; /* Centers vertically */
+  left: 50%; /* Centers horizontally */
+  transform: translate(-50%, -50%); /* Adjusts for perfect centering */
+  z-index: 9999;
+}
+
 .submitButton {
   width: 130px;
   height: 50px;
@@ -111,6 +121,11 @@
 
 /* Mobile View Adjustments */
 @media (max-width: 768px) {
+  body{
+    overflow: auto;
+  }
+
+
   .form-block {
     flex-direction: column;
     margin-right: 20px;

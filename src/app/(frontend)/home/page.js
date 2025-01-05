@@ -18,39 +18,35 @@ const Page = () => {
   const [fetching, setFetching] = useState(false);
 
   useEffect(() => {
+    setLoading(true);  // Set loading to true initially
     fetch("/api/auth")
       .then((res) => res.json())
       .then((data) => {
         setUser(data.user);
+        setLoading(false);  // Ensure loading is set to false once data is fetched
       })
       .catch(() => {
         setError(true);
-        setLoading(false);
+        setLoading(false);  // Set loading to false on error
       });
   }, []);
 
   useEffect(() => {
-    // Re-apply styles or trigger a reflow after page transition
-    document.body.style.display = 'none';
-    document.body.offsetHeight;  // Force reflow
-    document.body.style.display = '';
-  }, [nav.asPath]);
-
-  useEffect(() => {
     if (user) {
+      setLoading(true);  // Set loading to true when fetching data
       fetch(`/api/getCrewDetails/${user.email}`)
         .then((res) => res.json())
         .then((data) => {
-            console.log(data);
           setData(data);
-          setLoading(false);
+          setLoading(false);  // Set loading to false after data is fetched
         })
         .catch(() => {
           setError(true);
-          setLoading(false);
+          setLoading(false);  // Set loading to false on error
         });
     }
   }, [user]);
+  
 
   const handleSignOut = async () => {
     setFetching(true);
