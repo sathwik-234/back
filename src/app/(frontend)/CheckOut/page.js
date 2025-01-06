@@ -23,6 +23,7 @@ function CheckOut() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [checkInTime,setCheckInTime] = useState(null)
 
   const [formData, setFormData] = useState({
     cmsid: "",
@@ -109,6 +110,7 @@ function CheckOut() {
           const data = await res.json();
 
           if (data?.data?.[0]?.allotted_bed) {
+            setCheckInTime(new Date(data.data[0].ic_time))
             setFormData((prevData) => ({
               ...prevData,
               checkinId: data.data[0].id,
@@ -162,6 +164,18 @@ function CheckOut() {
     e.preventDefault();
     setButtonDisabled(true);
     try {
+
+      if (!checkInTime) {
+        throw new Error("Check-in time is unavailable.");
+      }
+
+      const checkoutTime = new Date(formData.outTime);
+      if (checkoutTime <= checkInTime) {
+        alert("Checkout time must be later than the check-in time.");
+        setButtonDisabled(false);
+        nav.push("/home")
+        return;
+      }
         console.log(3)
         if(verified){
           console.log(4)
