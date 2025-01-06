@@ -181,9 +181,7 @@ function CheckOut() {
         throw new Error("Check-in time is unavailable.");
       }
       
-        console.log(3)
         if(verified){
-          console.log(4)
             const response = await fetch("/api/CheckOutSubmit", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -200,7 +198,6 @@ function CheckOut() {
                 throw new Error(`Error during submission: ${response.ok ? resp.statusText : response.statusText}`);
               }
         
-              alert("Form submitted successfully!");
               setFormData({
                 cmsid: "",
                 name: "",

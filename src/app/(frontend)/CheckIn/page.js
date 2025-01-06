@@ -160,7 +160,6 @@ function CheckIn() {
     
                 if (response.ok && resp.ok) {
                     console.log('Form submitted successfully:', result1);
-                    alert('Form submitted successfully!');
                     setRefreshKey((prev) => prev + 1);
                 } else {
                     const errorMessage = response.ok ? result2.error.message : result1.error.message;
