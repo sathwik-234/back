@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import "./page.css";
 import { updatePassword } from "@/utils/actions";
+import { useRouter } from "next/navigation";
 
 
 
@@ -10,6 +11,7 @@ const Page = () => {
     const [formData, setFormData] = useState({});
     const [passwordError, setPasswordError] = useState("");
     const [forgotPassword, setForgotPassword] = useState(false);
+    const nav = useRouter();
 
     const handlePasswordChange = (e) => {
         const { id, value } = e.target;
@@ -39,6 +41,7 @@ const Page = () => {
             }
             else{
                 alert("Password updated successfully");
+                nav.push("/ThankYou")
             }
         }
     }

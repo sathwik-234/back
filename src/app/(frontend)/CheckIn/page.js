@@ -121,6 +121,19 @@ function CheckIn() {
         e.preventDefault();
         setButtonDisabled(true);
         console.log(verified)
+        if(new Date(formData.arrTime) > new Date(formData.icTime)){
+            alert("VZM arrival time is greater than Running Room Arrival Time")
+            document.getElementById("arrTime").value = ""
+            setFormData((prevdata)=>(
+                {
+                    ...prevdata,
+                    arrTime : ""
+                }
+            ))
+            setButtonDisabled(false)
+            signout();
+            return
+        }
         try {
             if (verified) {
                 // First request to submit the form data
@@ -174,7 +187,6 @@ function CheckIn() {
             });
             setButtonDisabled(false);
     
-            // Signout and redirect
             signout();
             nav.push('/');
         }
@@ -263,7 +275,7 @@ function CheckIn() {
                     <div className="left-block">
                         <div className="form-field">
                             <label htmlFor="vzm_arr_time" className="label">VZM. Arrival Time</label>
-                            <input type="datetime-local" name="arrTime" value={formData.arrTime} onChange={handleChange} className="input-datetime" required/>
+                            <input type="datetime-local" name="arrTime" value={formData.arrTime} onChange={handleChange} className="input-datetime" id='arrTime' required/>
                         </div>
                         <div className="form-field">
                             <label htmlFor="icTrainNo" className="label">Incoming Train No:</label>

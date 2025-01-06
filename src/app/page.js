@@ -104,6 +104,11 @@ const PageCo = () => {
                     }
                 } else {
                     alert("CMS ID not found. || CMS ID उपलब्ध नहीं है।");
+                    document.getElementById("password").value = "";
+                            setFormData((prevdata) => ({
+                                ...prevdata,
+                                password: ""
+                            })); 
                     nav.push("/?authtype=signup")
                 }
             } else if (authType === "reset-password") {

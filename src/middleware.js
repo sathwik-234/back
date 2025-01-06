@@ -49,7 +49,6 @@ export const middleware = async request => {
   return supabaseResponse
 }
 
-// Routes Middleware should not run on
 export const config = {
   matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 }

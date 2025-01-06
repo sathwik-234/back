@@ -24,7 +24,7 @@ Equipped with advanced features for real-time bed availability monitoring, the s
         </h2>
 
           <div className="team-grid">
-          <div className="team-member">
+          {/* <div className="team-member">
               <img
                 src="/DRM.jpg"
                 alt="DRM"
@@ -32,7 +32,7 @@ Equipped with advanced features for real-time bed availability monitoring, the s
               />
               <h3>Lalit Bohra</h3>
               <p>DRM</p>
-            </div>
+            </div> */}
             <div className="team-member">
               <img
                 src="/ADRM.jpg"
@@ -40,11 +40,12 @@ Equipped with advanced features for real-time bed availability monitoring, the s
                 className="team-photo"
               />
               <h3>Manoj Kumar Sahoo</h3>
-              <p>ADRM(OP)</p>
+              {/* <p>ADRM(OP)</p> */}
+              <p>DRM</p>
             </div>
             <div className="team-member">
               <img
-                src="https://via.placeholder.com/150"
+                src="/SrDEE(OP).jpg"
                 alt="Sr.DEE(OP)"
                 className="team-photo"
               />

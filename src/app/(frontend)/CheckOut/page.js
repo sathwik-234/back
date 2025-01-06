@@ -163,19 +163,24 @@ function CheckOut() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setButtonDisabled(true);
+    const checkoutTime = new Date(formData.outTime);
+    if (checkoutTime <= checkInTime) {
+      document.getElementById("outTime").value = ""
+      setFormData((prevdata)=>({
+        ...prevdata,
+        outTime : ""
+      }))
+      alert("Checkout time must be later than the check-in time.");
+      setButtonDisabled(false);
+      return;
+    }
     try {
+
 
       if (!checkInTime) {
         throw new Error("Check-in time is unavailable.");
       }
-
-      const checkoutTime = new Date(formData.outTime);
-      if (checkoutTime <= checkInTime) {
-        alert("Checkout time must be later than the check-in time.");
-        setButtonDisabled(false);
-        nav.push("/home")
-        return;
-      }
+      
         console.log(3)
         if(verified){
           console.log(4)
@@ -303,13 +308,14 @@ function CheckOut() {
           </div>
           <div className="left-block">
           <div className="form-field">
-                                <label className="field-label">Outgoing Time:</label>
+                                <label className="field-label">Running Room CheckOut Time:</label>
                                 <input
                                     type="datetime-local"
                                     name="outTime"
                                     value={formatDate(formData.outTime)}
                                     onChange={handleChange}
                                     className="form-input"
+                                    id = "outTime"
                                     required
                                 />
                             </div>
