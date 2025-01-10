@@ -148,7 +148,8 @@ function CheckOut() {
           console.log("Room is verified");
           setVerified(true);
         } else {
-          throw new Error("Invalid room data format received.");
+          alert("You have not checked In")
+          throw new Error("No CheckIn Data Received.");
         }
       } catch (err) {
         console.error(err.message);
