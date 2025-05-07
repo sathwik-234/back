@@ -7,6 +7,7 @@ import { signout } from "@/utils/actions";
 import { PiSignOutBold } from "react-icons/pi";
 import { FaPersonWalkingLuggage } from "react-icons/fa6";
 import { MdLocalHotel } from "react-icons/md";
+import { IoFastFoodSharp } from "react-icons/io5";
 
 
 const Page = () => {
@@ -88,12 +89,20 @@ const Page = () => {
               CheckIn
             </button>
             <button
+              className="home-button meal-token"
+              onClick={() => nav.push("/Slips")}
+            >
+               <IoFastFoodSharp style={{ marginRight: '8px' }} /> {/* Icon */}
+             Meal Token 
+            </button>
+            <button
               className="home-button check-out"
               onClick={() => nav.push("/CheckOut")}
             >
                <FaPersonWalkingLuggage style={{ marginRight: '8px' }} /> {/* Icon */}
               CheckOut
             </button>
+            
           </div>
           <div className="home-buttons-container">
             <button
