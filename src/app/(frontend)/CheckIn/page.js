@@ -298,7 +298,7 @@ function CheckIn() {
                         </div>
                     </div>
 
-                    <div className='feedback-block'>
+                    {/* <div className='feedback-block'>
                         <div className="form-field">
                             <label htmlFor="bedSheets" className="label">Bed Sheets:</label>
                             <input type="number" name="bedSheets" value={formData.bedSheets} onChange={handleChange} className="input-number" required/>
@@ -313,7 +313,7 @@ function CheckIn() {
                             <label htmlFor="blanket" className="label">Blankets:</label>
                             <input type="number" name="blanket" value={formData.blanket} onChange={handleChange} className="input-number" required/>
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* <div className="button-div" disabled={buttonDisabled}>
                         <button className="submitButton" type="submit">SUBMIT</button>

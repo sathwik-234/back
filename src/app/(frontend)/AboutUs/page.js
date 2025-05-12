@@ -18,12 +18,16 @@ Equipped with advanced features for real-time bed availability monitoring, the s
         </section>
 
         <section className="team-section">
+          <h2>--- Gumpina Pradeep Kumar & Gumpina Sai Sathwik</h2>
+        </section>
+
+        {/* <section className="team-section">
         <h2>
           <BsPeopleFill style={{ marginRight: '15px' }} />
           Meet Our Department
         </h2>
 
-          <div className="team-grid">
+          <div className="team-grid"> */}
           {/* <div className="team-member">
               <img
                 src="/DRM.jpg"
@@ -33,7 +37,7 @@ Equipped with advanced features for real-time bed availability monitoring, the s
               <h3>Lalit Bohra</h3>
               <p>DRM</p>
             </div> */}
-            <div className="team-member">
+            {/* <div className="team-member">
               <img
                 src="/ADRM.jpg"
                 alt="ADRM"
@@ -41,7 +45,7 @@ Equipped with advanced features for real-time bed availability monitoring, the s
               />
               <h3>Manoj Kumar Sahoo</h3>
               {/* <p>ADRM(OP)</p> */}
-              <p>DRM</p>
+              {/* <p>DRM</p>
             </div>
             <div className="team-member">
               <img
@@ -70,8 +74,8 @@ Equipped with advanced features for real-time bed availability monitoring, the s
               <h3>S. Baliyar Singh</h3>
               <p>ADEE(OP)</p>
             </div>
-          </div>
-        </section>
+          </div> */} 
+        {/* </section> */}
       </div>
     </div>
   );

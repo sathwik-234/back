@@ -74,7 +74,10 @@ const Page = () => {
             <img src="/home-1.png" alt="Simhachalam North Logo" />
           </div>
           <div className="home-heading">
-            <h1>VIZIANAGARAM RUNNING ROOM</h1>
+            <h1>AR Royal Food Court</h1>
+          </div>
+          <div className="home-heading">
+            <h1>Vizianagaram Jn.</h1>
           </div>
         </div>
         <div className="home-text-container">

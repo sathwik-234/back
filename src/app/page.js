@@ -184,13 +184,13 @@ const PageCo = () => {
                     <img src="/home-1.png" alt="logo" />
                 </div>
                 <div className="heading">
-                    <h1>East Coast Railway</h1>
+                    <h1>A R Royal Food Court</h1>
                 </div>
                 <div className="sub-heading">
                     <h2>Running Room Governance</h2>
                 </div>
                 <div className="sub-heading">
-                    <h2>Waltair Division-VSKP</h2>
+                    <h2>Waltair Division</h2>
                 </div>
                 <div className="sub-heading">
                     <h2>Vizianagaram Jn.</h2>

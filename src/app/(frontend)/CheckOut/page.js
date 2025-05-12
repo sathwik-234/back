@@ -328,7 +328,7 @@ function CheckOut() {
                                     required
                                 />
                             </div>
-                            <div className="form-field">
+                            {/* <div className="form-field">
                                 <label className="field-label">BreakFast:</label>
                                 <input
                                     type="number"
@@ -375,7 +375,7 @@ function CheckOut() {
                                     className="form-input"
                                     required
                                 />
-                            </div>
+                            </div> */}
           </div>
           <div className="feedback-block">
             <Grid item xs={12}>
