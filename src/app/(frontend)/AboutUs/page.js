@@ -17,9 +17,9 @@ Equipped with advanced features for real-time bed availability monitoring, the s
           </p>
         </section>
 
-        <section className="team-section">
+        {/* <section className="team-section">
           <h2>--- Gumpina Pradeep Kumar & Gumpina Sai Sathwik</h2>
-        </section>
+        </section> */}
 
         {/* <section className="team-section">
         <h2>

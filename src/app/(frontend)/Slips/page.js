@@ -225,7 +225,7 @@ const Page = () => {
               <strong>CMS ID:</strong> {formData.cms_id || data?.data?.cms_id}
             </p>
             <p>
-              <strong>Date:</strong> {formData.date || currentDateTime}
+              <strong>Date:</strong> {formData.date.slice(0,10) || currentDateTime.slice(0, 10)}
             </p>
             <p>
               <strong>Meal:</strong> {formData.meal}
