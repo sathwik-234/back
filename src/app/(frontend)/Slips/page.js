@@ -197,6 +197,7 @@ const Page = () => {
                 <option value="Breakfast">Breakfast</option>
                 <option value="Lunch">Lunch</option>
                 <option value="Dinner">Dinner</option>
+                <option value="Parcel">Parcel</option>
               </select>
             </div>
           </form>
