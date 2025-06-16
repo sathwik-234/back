@@ -43,6 +43,7 @@ function CheckOut() {
     service: 0,
     comfort: 0,
     overall: 0,
+    toTime: formatDate(new Date()),
   });
 
   useEffect(() => {
@@ -62,7 +63,7 @@ function CheckOut() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (["bedSheets", "pillowCover", "blanket"].includes(name) && value < 0) {
+    if (["bedSheets", "pillowCover", "blanket"].includes(name) &1& value < 0) {
       alert("Value cannot be negative");
       return;
     }
@@ -188,6 +189,14 @@ function CheckOut() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
               });
+            
+            const responseData = await fetch(`/api/ToTimeSubmit/${formData.checkinId}`,{
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                to_time: formData.toTime,
+              }),
+            });
         
               const resp = await fetch(`/api/rooms/${formData.allottedBed}`, {
                 method: "PATCH",
@@ -195,7 +204,7 @@ function CheckOut() {
                 body: JSON.stringify({ status: "FALSE", allotted_to: null }),
               });
         
-              if (!response.ok || !resp.ok) {
+              if (!response.ok || !resp.ok  || !responseData.ok) {
                 throw new Error(`Error during submission: ${response.ok ? resp.statusText : response.statusText}`);
               }
         
@@ -216,6 +225,7 @@ function CheckOut() {
                 service: 0,
                 comfort: 0,
                 overall: 0,
+                toTime: formatDate(new Date()),
               });
               nav.push("/home");
             }else{
@@ -305,7 +315,19 @@ function CheckOut() {
                             </div>
           </div>
           <div className="left-block">
-          <div className="form-field">
+                            <div className="form-field">
+                                <label className="field-label">TO Time:</label>
+                                <input
+                                    type="datetime-local"
+                                    name="toTime"
+                                    value={formatDate(formData.toTime)}
+                                    onChange={handleChange}
+                                    className="form-input"
+                                    id = "toTime"
+                                    required
+                                />
+                            </div>
+                            <div className="form-field">
                                 <label className="field-label">Running Room CheckOut Time:</label>
                                 <input
                                     type="datetime-local"
