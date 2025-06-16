@@ -1,16 +1,15 @@
 import { supabase } from "@/app/supabaseSetup";
 import { NextResponse } from "next/server";
 
-export const POST = async (req,{params}) => {
+export const POST = async (req, { params }) => {
     try {
         const formData = await req.json();
-        const { checkInId } = await params;
+        const { checkInId } = await params; 
 
-        const { data, error } = await supabase.from("CheckIn").eq("id",checkInId).insert([
-            {
-                to_time: formData.toTime,
-            },
-        ]);
+        const { data, error } = await supabase
+            .from("CheckIn")
+            .update(formData)
+            .eq("id", checkInId);
 
         if (error) {
             return NextResponse.json({ error }, { status: 500 });
@@ -22,5 +21,3 @@ export const POST = async (req,{params}) => {
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 };
-
-

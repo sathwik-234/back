@@ -191,7 +191,7 @@ function CheckOut() {
               });
             
             const responseData = await fetch(`/api/ToTimeSubmit/${formData.checkinId}`,{
-              method: "PATCH",
+              method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 to_time: formData.toTime,
